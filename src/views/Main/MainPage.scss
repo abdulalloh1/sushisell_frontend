@@ -1,0 +1,30 @@
+.main-page {
+  .main {
+    &-wrapper {
+      display: flex;
+     flex-direction: column;
+    }
+
+    &-slider {
+      width: 100%;
+
+      &-item {
+        height: 210px;
+        margin-right: 25px;
+        overflow: hidden;
+
+        &__img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          border-radius: 15px;
+        }
+      }
+    }
+
+    &__chips {
+      margin-top: 65px;
+      margin-bottom: 25px;
+    }
+  }
+}

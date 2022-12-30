@@ -1,0 +1,32 @@
+@import "flickity/dist/flickity.css";
+
+.flickity {
+  // width: 100%;
+  // height: 100%;
+
+  .carousel {
+    background: #eee;
+    margin-bottom: 40px;
+  }
+
+  &::v-deep .carousel-cell {
+    height: 200px;
+    width: 25%;
+    margin: 0 10px;
+    background: #6c6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .flickity-prev-next-button.previous:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .flickity-prev-next-button.next {
+    outline: none;
+    box-shadow: none;
+  }
+}
