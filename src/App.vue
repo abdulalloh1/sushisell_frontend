@@ -4,12 +4,17 @@ import AppFooter from "./components/layout/AppFooter/AppFooter.vue";
 </script>
 
 <template>
-  <div>
+  <div class="app">
     <app-header />
     <router-view />
     <app-footer />
   </div>
 </template>
 
-<style scoped>
+<style lang="scss">
+.app {
+  max-width: 767px;
+  margin-right: auto;
+  margin-left: auto;
+}
 </style>

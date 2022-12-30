@@ -1,28 +1,30 @@
 .chips {
   display: flex;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  height: 45px;
 }
 
 .chip {
   flex: 1 1 auto;
-    margin: 0 4px;
-    height: 32px;
-    padding: 8px 10px;
-    transition-duration: .2s;
-    transition-property: color;
-    letter-spacing: .1px;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-feature-settings: "pnum" on,"lnum" on;
-    background: #eaeaea;
-    border-radius: 12px;
-    color: #444;
-    cursor: pointer;
+  margin: 0 4px;
+  height: 32px;
+  padding: 8px 10px;
+  transition-duration: .2s;
+  transition-property: color;
+  letter-spacing: .1px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-feature-settings: "pnum" on,"lnum" on;
+  background: #eaeaea;
+  border-radius: 12px;
+  color: #444;
+  white-space: nowrap;
+  cursor: pointer;
 
   // &__close-btn {
   //   display: flex;

@@ -8,6 +8,27 @@
     position: relative;
   }
 
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 30px;
+    width: 30px;
+    border-radius: 50em;
+    background: url('/public/close.svg')
+      no-repeat 50% 50%;
+    background-size: contain;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  input[type="search"]:focus::-webkit-search-cancel-button {
+    opacity: 0.3;
+    pointer-events: all;
+  }
+
+  input[type="search"].dark::-webkit-search-cancel-button {
+    filter: invert(1);
+  }
+
   // &:not(&--read-only) {
   //   .app-input__row:focus-within {
   //     &:after {

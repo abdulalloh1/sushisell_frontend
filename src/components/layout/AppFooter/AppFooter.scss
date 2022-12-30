@@ -6,6 +6,11 @@
   left: 0;
   box-shadow: 0 0 12px rgb(81 151 181 / 12%);
   background-color: #fff;
+  max-width: 767px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
 
   &-wrapper {
     display: flex;
