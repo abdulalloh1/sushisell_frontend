@@ -21,6 +21,4 @@
 </template>
 
 
-<style lang="scss" src="./AppHeader.scss">
-
-</style>
+<style lang="scss" src="./AppHeader.scss"/>

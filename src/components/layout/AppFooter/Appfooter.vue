@@ -71,6 +71,4 @@
     </div>
 </template>
 
-<style lang="scss" src="./AppFooter.scss">
-
-</style>
+<style lang="scss" src="./AppFooter.scss" />

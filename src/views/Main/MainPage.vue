@@ -232,6 +232,4 @@ const flickityOptions = {
 </template>
 
 
-<style src="./MainPage.scss">
-
-</style>
+<style lang="scss" src="./MainPage.scss" />

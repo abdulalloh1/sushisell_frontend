@@ -12,6 +12,7 @@ import AppFooter from "./components/layout/AppFooter/AppFooter.vue";
 </template>
 
 <style lang="scss">
+@import "assets/scss/main";
 .app {
   max-width: 767px;
   margin-right: auto;
