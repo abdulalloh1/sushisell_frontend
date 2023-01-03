@@ -57,7 +57,7 @@
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/profile"
+          to="/auth"
       >
         <div class="app-footer__home">
           <svg

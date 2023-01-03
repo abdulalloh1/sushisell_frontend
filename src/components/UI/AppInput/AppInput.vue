@@ -126,6 +126,7 @@ const toggleInputFocus = (val: boolean) => {
           :placeholder="props.placeholder"
           :readonly="props.readonly"
           :type="props.type"
+          :style="computedStyles"
           class="app-input__field"
           @focus="toggleInputFocus(true)"
           @focusout="toggleInputFocus(false)"
