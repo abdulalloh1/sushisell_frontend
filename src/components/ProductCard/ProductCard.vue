@@ -1,13 +1,18 @@
-<script
-    lang="ts"
-    setup
->
+<script lang="ts" setup>
+import { ref } from 'vue';
+
 const props = defineProps({
   roll: {
     type: Object,
     required: true
   }
 });
+
+let show = ref(false)
+const toggleBtn = () => {
+  return show.value = !show.value
+}
+
 </script>
 
 <template>
