@@ -5,6 +5,7 @@
 import { useCitiesStore } from "@/store/parts/cities";
 import { ref } from "vue";
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
+import AppChip from "@/components/UI/Chips/AppChip.vue";
 
 const citiesStore = useCitiesStore()
 const isCitiesListModalOpen = ref(false)
@@ -70,6 +71,18 @@ function openCitiesListModal () {
               <label for="">{{ city.name }}</label>
             </div>
           </div>
+        </template>
+      </modal-dialog>
+
+      <modal-dialog
+          v-model="isMessageModalOpen"
+          class="message-modal-dialog"
+      >
+        <template #body>
+          <app-chip class="message-modal-dialog__chip message-modal-dialog__chip--telegram">
+            <svg data-src="/img/telegram.svg" />
+            Написать в Telegram
+          </app-chip>
         </template>
       </modal-dialog>
     </teleport>
