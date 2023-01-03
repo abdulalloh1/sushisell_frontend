@@ -1,7 +1,7 @@
 .chips {
   display: flex;
   overflow-x: auto;
-  height: 45px;
+  margin: 0 -5px;
 }
 
 .chip {
@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-feature-settings: "pnum" on,"lnum" on;
+  font-feature-settings: "pnum" on, "lnum" on;
   background: #eaeaea;
   border-radius: 12px;
   color: #444;
@@ -60,7 +60,7 @@
 
   &--active {
     color: #fff;
-    background: linear-gradient(180deg,#e15959,#e96f54);
+    background: linear-gradient(180deg, #e15959, #e96f54);
     // border-color: $green;
     z-index: 1;
   }

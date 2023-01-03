@@ -1,5 +1,8 @@
-<script lang="ts" setup>
-import { computed, defineProps, defineEmits } from "vue";
+<script
+    lang="ts"
+    setup
+>
+import { computed, defineEmits, defineProps } from "vue";
 import AppChip from "@/components/UI/Chips/AppChip.vue";
 
 const props = defineProps({
@@ -23,8 +26,12 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const computedModelValue = computed({
-  get() {return props.modelValue},
-  set(newValue) {emit('update:modelValue', newValue)}
+  get() {
+    return props.modelValue
+  },
+  set(newValue) {
+    emit('update:modelValue', newValue)
+  }
 })
 
 const computedItems = computed(() => {
@@ -34,11 +41,10 @@ const computedItems = computed(() => {
   })
 })
 
-function toggleSelect (value: string) {
-  if(computedModelValue.value.includes(value)) {
+function toggleSelect(value: string) {
+  if (computedModelValue.value.includes(value)) {
     computedModelValue.value = computedModelValue.value.filter(item => item !== value ? item : '')
-  }
-  else {
+  } else {
     computedModelValue.value.push(value)
   }
 }
@@ -47,10 +53,10 @@ function toggleSelect (value: string) {
 <template>
   <div class="chips">
     <app-chip
-      v-for="chip in computedItems"
-      :key="chip[itemValue]"
-      :class="{'chip--active': chip.isActive}"
-      @click="toggleSelect(chip[itemValue])"
+        v-for="chip in computedItems"
+        :key="chip[itemValue]"
+        :class="{'chip--active': chip.isActive}"
+        @click="toggleSelect(chip[itemValue])"
     >
       {{ chip[itemText] }}
     </app-chip>
