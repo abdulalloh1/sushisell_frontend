@@ -5,9 +5,11 @@
 import { useCitiesStore } from "@/store/parts/cities";
 import { ref } from "vue";
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
+import AppChip from "@/components/UI/Chips/AppChip.vue";
 
 const citiesStore = useCitiesStore()
 const isCitiesListModalOpen = ref(false)
+const isMessageModalOpen = ref(false)
 
 function openCitiesListModal () {
   isCitiesListModalOpen.value = true
@@ -37,9 +39,12 @@ function openCitiesListModal () {
             src="/public/img/message.png"
         >
       </div>
-      <div class="app-header__tel">
+      <a
+          href="tel:+78006002665"
+          class="app-header__tel"
+      >
         <svg data-src="img/phone.svg" />
-      </div>
+      </a>
     </div>
 
     <teleport to="body">
@@ -48,7 +53,37 @@ function openCitiesListModal () {
           :close-icon="false"
           class="cities-list-modal-dialog"
       >
+        <template #header>
+          <h2 class="modal__title">Выберите город</h2>
+          <a
+              href="tel:+78006002665"
+              class="modal__header__phone"
+          >
+            <svg data-src="img/phone.svg" />
+          </a>
+        </template>
+        <template #body>
+          <div class="cities-list-modal-dialog__list">
+            <div
+                v-for="(city, index) in citiesStore.cities"
+                class="app-radio"
+            >
+              <label for="">{{ city.name }}</label>
+            </div>
+          </div>
+        </template>
+      </modal-dialog>
 
+      <modal-dialog
+          v-model="isMessageModalOpen"
+          class="message-modal-dialog"
+      >
+        <template #body>
+          <app-chip class="message-modal-dialog__chip message-modal-dialog__chip--telegram">
+            <svg data-src="/img/telegram.svg" />
+            Написать в Telegram
+          </app-chip>
+        </template>
       </modal-dialog>
     </teleport>
   </div>

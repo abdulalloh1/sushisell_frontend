@@ -10,7 +10,7 @@ const props = defineProps({
   size: {
     type: String,
     validator(value: string) {
-      return ['large', 'medium', 'small'].includes(value);
+      return ['large', 'medium', 'small', 'full'].includes(value);
     },
     default: 'small'
   },
