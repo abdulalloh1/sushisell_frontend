@@ -1,10 +1,18 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const props = defineProps({
     roll: {
         type: Object,
         required: true
     }
 });
+
+let show = ref(false)
+const toggleBtn = () => {
+  return show.value = !show.value
+}
+
 </script>
 
 <template>
@@ -15,7 +23,8 @@ const props = defineProps({
         <div class="product-card__items">
             <div class="product-card__text">
                 <p class="product-card__name">{{ roll.title }}</p>
-                <p class="product-card__wishes">
+                <p :class="['product-card__wishes', { 'show': show }]">
+                    Ваши пожелания
                     <label for="1" v-for="(spice, idx) in roll.spices" :key="idx">
                         <input type="checkbox" name="" id="2">
                         <span>{{ spice.label }}</span>
