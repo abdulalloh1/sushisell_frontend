@@ -1,11 +1,14 @@
-<script lang="ts" setup>
-import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+<script
+    lang="ts"
+    setup
+>
+import { onMounted, onUnmounted, ref } from 'vue'
 import Flickity from 'flickity'
 
 const props = defineProps({
-    options: {
-        type: Object,
-    },
+  options: {
+    type: Object,
+  },
 });
 let flickity: typeof Flickity | null = null
 const root = ref<HTMLElement | null>(null)
@@ -16,10 +19,16 @@ onUnmounted(() => flickity?.destroy())
 </script>
 
 <template>
-    <div ref="root" class="flickity">
-        <slot />
-    </div>
+  <div
+      ref="root"
+      class="flickity"
+  >
+    <slot/>
+  </div>
 </template>
 
-<style lang="scss" src="./Flickity.scss"></style>
+<style
+    lang="scss"
+    src="./Flickity.scss"
+></style>
   

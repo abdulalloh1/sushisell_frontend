@@ -1,5 +1,8 @@
-<script lang="ts" setup>
-import { computed, defineEmits, defineProps } from 'vue';
+<script
+    lang="ts"
+    setup
+>
+import { computed, defineProps } from 'vue';
 
 const props = defineProps({
   to: {
@@ -27,11 +30,11 @@ const componentType = computed(() => {
 
 <template>
   <component
-    :is="componentType"
-    :class="['chip', {
+      :is="componentType"
+      :class="['chip', {
       'chip--link': to
     }]"
-    :to="to"
+      :to="to"
   >
     <div class="chip__bg-color"/>
     <slot/>
@@ -45,4 +48,7 @@ const componentType = computed(() => {
   </component>
 </template>
 
-<style lang="scss" src="./AppChips.scss"/>
+<style
+    lang="scss"
+    src="./AppChips.scss"
+/>

@@ -6,16 +6,13 @@
   left: 0;
   box-shadow: 0 0 12px rgb(81 151 181 / 12%);
   background-color: #fff;
-  max-width: 767px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 15px;
-  padding-left: 15px;
+  margin: 0 auto;
+  padding: 0 15px;
 
   &-wrapper {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     height: 58px;
   }
 
@@ -32,6 +29,7 @@
 
     &.active {
       background-color: #eaeaea;
+
       svg path {
         fill: #009846;
       }

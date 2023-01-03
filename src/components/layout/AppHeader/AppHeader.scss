@@ -6,11 +6,8 @@
   height: 56px;
   box-shadow: 0 0 12px rgb(81 151 181 / 12%);
   background-color: #fff;
-  max-width: 767px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 15px;
-  padding-left: 15px;
+  margin: 0 auto;
+  padding: 0 15px;
   z-index: 111;
 
   &-wrapper {
