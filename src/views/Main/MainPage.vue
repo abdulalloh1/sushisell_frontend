@@ -250,11 +250,6 @@ const flickityOptions = {
         </div>
       </div>
       <div class="main__rolls">
-        <app-chekbox>
-          <template #label>
-            title
-          </template>
-        </app-chekbox>
         <product-card
             v-for="(roll, idx) in rolls"
             :key="idx"
