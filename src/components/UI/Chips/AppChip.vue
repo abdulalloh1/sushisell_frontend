@@ -9,6 +9,10 @@ const props = defineProps({
     type: [String, Object],
     default: null
   },
+  href: {
+    type: String,
+    default: null
+  },
   removable: {
     type: Boolean,
     default: false
@@ -20,7 +24,7 @@ const props = defineProps({
 // ]);
 
 const componentType = computed(() => {
-  return props.to ? 'router-link' : 'div';
+  return props.to ? 'router-link' : props.href ? 'a' : 'div';
 });
 
 // function remove() {
@@ -32,9 +36,10 @@ const componentType = computed(() => {
   <component
       :is="componentType"
       :class="['chip', {
-      'chip--link': to
-    }]"
+        'chip--link': to
+      }]"
       :to="to"
+      :href="href"
   >
     <div class="chip__bg-color"/>
     <slot/>

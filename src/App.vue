@@ -8,11 +8,16 @@ import AppFooter from "./components/Layout/AppFooter/AppFooter.vue";
 
 import { useCitiesStore } from "@/store/parts/cities";
 import { onMounted } from "vue";
+import { useSettingStore } from "@/store/parts/setting";
 
 const citiesStore = useCitiesStore()
+const settingStore = useSettingStore()
 
 onMounted(() => {
-  citiesStore.getCities()
+  Promise.all([
+    citiesStore.getCities(),
+    settingStore.getSetting()
+  ])
 })
 </script>
 

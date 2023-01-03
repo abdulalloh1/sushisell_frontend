@@ -2,18 +2,31 @@
     lang="ts"
     setup
 >
-import { useCitiesStore } from "@/store/parts/cities";
 import { ref } from "vue";
+import { useCitiesStore } from "@/store/parts/cities";
+import { useSettingStore } from "@/store/parts/setting";
+
+// Components
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
 import AppChip from "@/components/UI/Chips/AppChip.vue";
 
+// Store
 const citiesStore = useCitiesStore()
+const settingStore = useSettingStore()
+
+// State
 const isCitiesListModalOpen = ref(false)
 const isMessageModalOpen = ref(false)
 
+// Functions
 function openCitiesListModal () {
   isCitiesListModalOpen.value = true
 }
+
+function openMessageModal () {
+  isMessageModalOpen.value = true
+}
+
 </script>
 
 
@@ -33,12 +46,15 @@ function openCitiesListModal () {
         <svg data-src="img/location.svg"/>
         {{ citiesStore.activeCity }}
       </button>
-      <div class="app-header__msg">
+      <button
+          class="app-header__msg"
+          @click="openMessageModal"
+      >
         <img
             alt=""
             src="/public/img/message.png"
         >
-      </div>
+      </button>
       <a
           href="tel:+78006002665"
           class="app-header__tel"
@@ -50,8 +66,9 @@ function openCitiesListModal () {
     <teleport to="body">
       <modal-dialog
           v-model="isCitiesListModalOpen"
-          :close-icon="false"
           class="cities-list-modal-dialog"
+          size="full"
+          :close-icon="false"
       >
         <template #header>
           <h2 class="modal__title">Выберите город</h2>
@@ -79,7 +96,10 @@ function openCitiesListModal () {
           class="message-modal-dialog"
       >
         <template #body>
-          <app-chip class="message-modal-dialog__chip message-modal-dialog__chip--telegram">
+          <app-chip
+              class="message-modal-dialog__chip message-modal-dialog__chip--telegram"
+              :href="settingStore.setting?.tg_link"
+          >
             <svg data-src="/img/telegram.svg" />
             Написать в Telegram
           </app-chip>
