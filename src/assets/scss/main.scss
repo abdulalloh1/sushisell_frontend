@@ -3,8 +3,11 @@
 @import "./parts/container";
 
 body {
-  font-family: "PT sans";
+  font-family: "PT sans", sans-serif;
+  font-weight: 400;
   font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 .page {
@@ -23,6 +26,38 @@ body {
       width: 100%;
       height: 100vh;
       border-radius: 0;
+    }
+
+    &__header {
+      width: 100%;
+      height: 56px;
+      background: linear-gradient(180deg,#e15959,#e96f54);
+      padding: 0 18px;
+      align-items: center;
+
+      &__phone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: -18px;
+        width: 56px;
+        height: 100%;
+
+        svg {
+          path {
+            fill: #fff;
+          }
+        }
+      }
+    }
+
+    &__title {
+      color: #fff;
+      font-size: 18px;
+      line-height: 24px;
+      letter-spacing: .5px;
+      font-weight: 700;
     }
   }
 }

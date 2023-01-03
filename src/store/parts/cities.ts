@@ -6,11 +6,6 @@ export const useCitiesStore = defineStore('cities', {
         cities: [],
         activeCity: 'Красноярск'
     }),
-    getters: {
-        citiesGetter: (state) => {
-            return state.cities
-        }
-    },
     actions: {
         async getCities() {
             const { data } = await api.cities.getAll()
