@@ -66,25 +66,22 @@ function removeFromArray() {
 <template>
     <div :class="['checkbox', {
     'checkbox--disabled': disabled
-    }]">
-        <input
-            :id="`${randomID}`"
-            :checked="computedChecked"
-            :value="computedValue"
-            :disabled="disabled"
-            class="checkbox__input"
-            type="checkbox"
-            @change="change()"
-        >
-        <label
-            :for="`${randomID}`"
-            class="checkbox__label"
-        >
+}]">
+        <input :id="`${randomID}`" :checked="computedChecked" :value="computedValue" :disabled="disabled"
+            class="checkbox__input" type="checkbox" @change="change()">
+        <label :for="`${randomID}`" class="checkbox__label">
             <span class="checkbox__label__icon">
-                <svg width="30" height="22" viewBox="0 0 30 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.46875 9.59672L10.9868 18.0947L27.4981 2.07593" stroke="var(--current-color)"
-                        stroke-width="5.00586" 
-                    />
+                <svg width="12px" height="12px" viewBox="-1.6 -1.6 19.20 19.20" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#009846"
+                    stroke="#009846" transform="matrix(1, 0, 0, 1, 0, 0)" stroke-width="1.6">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0">
+                        <rect x="-1.6" y="-1.6" width="19.20" height="19.20" rx="0" fill="#009846" strokewidth="0">
+                        </rect>
+                    </g>
+                    <g id="SVGRepo_iconCarrier">
+                        <rect width="16" height="16" id="icon-bound" fill="none"></rect>
+                        <rect x="2" y="2" width="12" height="12"></rect>
+                    </g>
                 </svg>
             </span>
             <span class="checkbox__label__text">
@@ -93,5 +90,9 @@ function removeFromArray() {
         </label>
     </div>
 </template>
+
+
+
+
 
 <style lang="scss" src="./AppCheckbox.scss"/>

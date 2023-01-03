@@ -19,6 +19,14 @@
     }
   }
 
+  &__items {
+    width: 40%;
+  }
+
+  &__text {
+    min-height: 105px;
+  }
+
   &__name {
     font-weight: 700;
     font-size: 14px;
@@ -36,17 +44,36 @@
   }
 
   &__wishes {
-    text-decoration: underline;
     color: #009846;
+    max-height: 21px;
+    transition: all 0.3s;
+    overflow: hidden;
 
-    span {
-      font-size: 14px;
-      padding-left: 20px;
-      display: inline-block;
-      margin-right: 20px;
-      margin-bottom: 10px;
-      color: #212121;
+    &.show {
+      max-height: 105px;
     }
+    &__btn {
+      text-decoration: underline;
+      color: #009846;
+      margin-bottom: 10px;
+    }
+  }
+
+  &__label-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  &__label {
+    font-size: 14px;
+    color: #212121;
+  }
+
+  &__order {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
   }
 
   &__btn {
