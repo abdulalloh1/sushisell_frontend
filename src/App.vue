@@ -4,13 +4,14 @@
 >
 import AppHeader from "./components/layout/AppHeader/AppHeader.vue";
 import AppFooter from "./components/layout/AppFooter/AppFooter.vue";
-import { useCitiesStore } from "@/store/cities";
+
+import { useCitiesStore } from "@/store/parts/cities";
 import { onMounted } from "vue";
 
-const useCities = useCitiesStore()
+const citiesStore = useCitiesStore()
 
 onMounted(() => {
-  useCities.getCities()
+  citiesStore.getCities()
 })
 </script>
 

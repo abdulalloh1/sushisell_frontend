@@ -28,8 +28,6 @@ export function setupInterceptorsTo(axiosInstance: AxiosInstance): AxiosInstance
     return axiosInstance;
 }
 
-console.log(import.meta)
-
 const instance = axios.create({
     baseURL: import.meta.env.VITE_API_URL + 'v2'
 })
