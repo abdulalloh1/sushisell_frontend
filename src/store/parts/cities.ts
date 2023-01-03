@@ -3,11 +3,11 @@ import api from '@/api'
 
 export const useCitiesStore = defineStore('cities', {
     state: () => ({
-        cities: []
+        cities: [],
+        activeCity: 'Красноярск'
     }),
     getters: {
         citiesGetter: (state) => {
-            console.log(state.cities)
             return state.cities
         }
     },

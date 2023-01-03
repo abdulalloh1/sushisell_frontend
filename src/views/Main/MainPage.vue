@@ -17,37 +17,37 @@ const dataInput = {
 
 const images = reactive([
   {
-    img: '/public/slider-roll.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/slider-roll-2.jpeg'
+    img: '/public/img/slider-roll-2.jpeg'
   },
   {
-    img: '/public/slider-roll-3.jpeg'
+    img: '/public/img/slider-roll-3.jpeg'
   },
   {
-    img: '/public/slider-roll-4.jpeg'
+    img: '/public/img/slider-roll-4.jpeg'
   },
   {
-    img: '/public/slider-roll-5.jpeg'
+    img: '/public/img/slider-roll-5.jpeg'
   },
   {
-    img: '/public/slider-roll-6.jpeg'
+    img: '/public/img/slider-roll-6.jpeg'
   },
   {
-    img: '/public/slider-roll-7.jpeg'
+    img: '/public/img/slider-roll-7.jpeg'
   },
   {
-    img: '/public/slider-roll-8.jpeg'
+    img: '/public/img/slider-roll-8.jpeg'
   },
   {
-    img: '/public/slider-roll-8.jpeg'
+    img: '/public/img/slider-roll-8.jpeg'
   },
   {
-    img: '/public/slider-roll-5.jpeg'
+    img: '/public/img/slider-roll-5.jpeg'
   },
   {
-    img: '/public/slider-roll-6.jpeg'
+    img: '/public/img/slider-roll-6.jpeg'
   },
 ])
 const state = reactive({
@@ -94,7 +94,7 @@ const state = reactive({
 
 const rolls = [
   {
-    Image: '/public/roll-1.webp',
+    Image: '/public/img/roll-1.webp',
     title: 'Отвал Башки',
     price: 319,
     spices: [
@@ -110,7 +110,7 @@ const rolls = [
     class: 'sale'
   },
   {
-    Image: '/public/roll-1.webp',
+    Image: '/public/img/roll-1.webp',
     title: 'Отвал Башки',
     price: 319,
     spices: [
@@ -126,7 +126,7 @@ const rolls = [
     class: 'sale'
   },
   {
-    Image: '/public/roll-1.webp',
+    Image: '/public/img/roll-1.webp',
     title: 'Отвал Башки',
     price: 319,
     spices: [
@@ -142,7 +142,7 @@ const rolls = [
     class: 'sale'
   },
   {
-    Image: '/public/roll-1.webp',
+    Image: '/public/img/roll-1.webp',
     title: 'Отвал Башки',
     price: 319,
     spices: [
@@ -158,7 +158,7 @@ const rolls = [
     class: 'sets'
   },
   {
-    Image: '/public/roll-1.webp',
+    Image: '/public/img/roll-1.webp',
     title: 'Отвал Башки',
     price: 319,
     spices: [

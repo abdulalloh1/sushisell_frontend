@@ -8,7 +8,7 @@
   background-color: #fff;
   margin: 0 auto;
   padding: 0 15px;
-  z-index: 111;
+  z-index: 8;
 
   &-wrapper {
     display: flex;
@@ -29,25 +29,16 @@
   }
 
   &__city {
-    position: relative;
-    height: 16px;
     font-weight: 400;
     font-size: 14px;
     line-height: 15px;
     letter-spacing: 0.1px;
     color: #c62734;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
 
-    &::before {
-      content: "";
-      width: 14px;
-      height: 14px;
-      background-image: url("/public/location.svg");
-      background-position: 50%;
-      background-repeat: no-repeat;
-      position: absolute;
-      top: 0;
-      left: -16px;
+    svg {
+      margin-right: 5px;
     }
   }
 
