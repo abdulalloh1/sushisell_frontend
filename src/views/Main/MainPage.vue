@@ -8,6 +8,7 @@ import AppChips from '@/components/UI/Chips/AppChips.vue';
 import AppInput from '@/components/UI/AppInput/AppInput.vue'
 import Flickity from '../../components/UI/Flickity/Flickity.vue';
 import ProductCard from '@/components/ProductCard/ProductCard.vue';
+import AppCheckBox from '@/components/UI/AppCheckBox/AppCheckBox.vue';
 
 const dataInput = {
   title: 'Поиск по названию, например: суши калифорния',
@@ -245,13 +246,15 @@ const flickityOptions = {
               :placeholder="dataInput.title"
               :type="dataInput.type"
           >
-            <template #label>
-              title
-            </template>
           </app-input>
         </div>
       </div>
       <div class="main__rolls">
+        <app-chekbox>
+          <template #label>
+            title
+          </template>
+        </app-chekbox>
         <product-card
             v-for="(roll, idx) in rolls"
             :key="idx"
