@@ -1,0 +1,175 @@
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9;
+  transition: .3s opacity, .3s transform;
+
+  &--size {
+    &-large {
+      .modal__window {
+        width: 597px;
+      }
+    }
+
+    &-medium {
+      .modal__window {
+        width: 535px;
+      }
+    }
+
+    &-small {
+      .modal__window {
+        width: 446px;
+      }
+    }
+
+    &-auto {
+      .modal__window {
+        width: auto;
+      }
+    }
+  }
+
+  &-enter-from, &-leave-to {
+    opacity: 0;
+
+    .modal__window {
+      transform: scale(.8);
+    }
+  }
+
+  &-enter-to {
+    opacity: 1;
+
+    .modal__window {
+      transform: scale(1);
+    }
+  }
+
+  &-enter-active, &-leave-active {
+    transition: opacity .3s ease;
+  }
+
+
+  &__overlay {
+    background-color: rgba(0, 0, 0, .5);
+    position: absolute;
+    @include full-sized;
+  }
+
+  &__wrapper {
+    @include flexCenter;
+    height: 100%;
+  }
+
+  &__window {
+    max-width: calc(100% - 30px);
+    max-height: calc(100% - 30px);
+    overflow-y: auto;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-radius: 10px;
+    transition: transform .3s;
+    padding-bottom: 30px;
+
+    @include scrollbar;
+  }
+
+  &__header {
+    padding: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+
+  &__body {
+    padding: 0 30px 30px;
+
+    &--no-padding {
+      padding-bottom: 0;
+    }
+
+    &__info-icon {
+      margin-right: 5px;
+    }
+  }
+
+  &__buttons {
+    padding: 0 30px;
+    display: flex;
+  }
+
+  &__close {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    width: 24px;
+    height: 24px;
+
+    svg {
+      transition: transform .3s;
+      --current-color: #000;
+    }
+
+    &:hover {
+      svg {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  &__title {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    color: #000;
+  }
+
+  &__subtitle {
+    color: #000;
+    margin-top: 15px;
+  }
+
+  &__btn {
+    width: 100%;
+    border-radius: 4px;
+    padding: 13px 15px;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@include max-xs {
+  .modal {
+    &__window {
+      padding: 0 0 30px;
+    }
+
+    &__header {
+      padding: 18px 20px;
+    }
+
+    &__body {
+      padding: 0 20px 20px;
+    }
+
+    &__buttons {
+      padding: 0 20px;
+    }
+  }
+}

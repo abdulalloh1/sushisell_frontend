@@ -2,8 +2,9 @@
     lang="ts"
     setup
 >
-import AppHeader from "./components/layout/AppHeader/AppHeader.vue";
-import AppFooter from "./components/layout/AppFooter/AppFooter.vue";
+import 'external-svg-loader'
+import AppHeader from "./components/Layout/AppHeader/AppHeader.vue";
+import AppFooter from "./components/Layout/AppFooter/AppFooter.vue";
 
 import { useCitiesStore } from "@/store/parts/cities";
 import { onMounted } from "vue";

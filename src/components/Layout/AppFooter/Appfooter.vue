@@ -84,7 +84,7 @@
         <div class="app-footer__home">
           <img
               alt=""
-              src="/public/gift.svg"
+              src="/public/img/gift.svg"
           >
         </div>
         <p class="app-footer__text">Акции</p>
