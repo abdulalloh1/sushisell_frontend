@@ -57,8 +57,8 @@ function showRegister() {
             <button type="submit" class="auth__btn">Войти</button>
         </form>
         <div class="auth__links">
-            <button class="auth__link" @click="showRegister">Регистрация</button>
             <button class="auth__link" v-if="show" @click="showRegister">Авторизация</button>
+            <button class="auth__link" v-else @click="showRegister">Регистрация</button>
             <button class="auth__link">Забыли пароль?</button>
         </div>
     </div>
