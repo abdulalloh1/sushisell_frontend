@@ -18,7 +18,6 @@ const settingStore = useSettingStore()
 // State
 const isCitiesListModalOpen = ref(false)
 const isMessageModalOpen = ref(false)
-const selectedCity = ref('')
 
 // Functions
 function openCitiesListModal() {
@@ -27,6 +26,11 @@ function openCitiesListModal() {
 
 function openMessageModal() {
   isMessageModalOpen.value = true
+}
+
+function changeCity (id: number) {
+  citiesStore.changeActiveCity(id)
+  isCitiesListModalOpen.value = false
 }
 </script>
 
@@ -45,7 +49,7 @@ function openMessageModal() {
           @click="openCitiesListModal"
       >
         <svg data-src="img/location.svg"/>
-        {{ citiesStore.activeCity }}
+        {{ citiesStore.activeCity.name }}
       </button>
       <button
           class="app-header__msg"
@@ -84,9 +88,11 @@ function openMessageModal() {
           <div class="cities-list-modal-dialog__list">
             <app-radio
                 v-for="(city, index) in citiesStore.cities"
-                v-model="selectedCity"
+                v-model="citiesStore.activeCity"
                 :key="index"
-                :value="city.name"
+                item-label="name"
+                item-value="id"
+                @click="changeCity(city.id)"
             >
               <template #label>{{ city.name }}</template>
             </app-radio>

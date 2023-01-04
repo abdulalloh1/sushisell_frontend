@@ -40,7 +40,6 @@ const localValue = computed({
         :value="value"
         v-model="localValue"
     >
-
     <label
         :for="`${randomID}`"
         class="checkbox__label"
@@ -55,4 +54,4 @@ const localValue = computed({
 <style
     lang="scss"
     src="./AppRadio.scss"
-></style>
+/>
