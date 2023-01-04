@@ -57,7 +57,7 @@
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/auth"
+          to="/"
       >
         <div class="app-footer__home">
           <svg
@@ -79,7 +79,7 @@
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/sale"
+          to="/"
       >
         <div class="app-footer__home">
           <img
@@ -91,7 +91,7 @@
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/contact"
+          to="/"
       >
         <div class="app-footer__home">
           <svg
@@ -113,7 +113,7 @@
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/basket"
+          to="/"
       >
         <div class="app-footer__home">
           <svg

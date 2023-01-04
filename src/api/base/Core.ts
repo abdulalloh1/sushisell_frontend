@@ -2,7 +2,7 @@ import {axiosInstanceV1} from "@/api/base/HTTPBaseService";
 
 export class Core {
     protected _axios: AxiosInstance;
-    private url: string;
+    protected url: string;
 
     constructor(url: string) {
         this._axios = axiosInstanceV1;

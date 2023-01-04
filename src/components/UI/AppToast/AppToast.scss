@@ -1,0 +1,30 @@
+.app-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 15px;
+  transform: translateX(-50%);
+  width: fit-content;
+  height: fit-content;
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item {
+    min-width: 200px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin: 5px;
+    color: #fff;
+    font-size: 1.5em;
+
+    &--success {
+      background-color: #00CC69;
+    }
+
+    &--error {
+      background-color: #EB5757;
+    }
+  }
+}
