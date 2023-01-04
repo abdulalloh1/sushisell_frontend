@@ -32,7 +32,6 @@
     color: black;
     display: flex;
     cursor: pointer;
-    user-select: none;
     text-transform: capitalize;
 
     a {
@@ -41,9 +40,10 @@
     }
 
     &__icon {
-      min-width: 20px;
+      position: relative;
+      min-width: 17px;
       max-width: 20px;
-      height: 20px;
+      height: 18px;
       border: 3px solid #009846;
       background-color: transparent;
       position: relative;
@@ -52,11 +52,11 @@
       justify-content: center;
       cursor: pointer;
       transition: background-color 0.3s;
-      position: relative;
 
       svg {
         position: absolute;
-        height: 17px;
+        height: 10px;
+        width: 9px;
         opacity: 0;
         transition: opacity 0.3s;
         --current-color: #00cc69;

@@ -33,7 +33,7 @@ const toggleBtn = () => {
         </div>
       </div>
       <div class="product-card__order">
-        <p class="product-card__price">{{ roll.price }}</p>
+        <p class="product-card__price">{{ roll.price }} ₽</p>
         <button class="product-card__btn">Заказать</button>
       </div>
     </div>

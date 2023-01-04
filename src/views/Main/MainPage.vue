@@ -250,6 +250,7 @@ const flickityOptions = {
         </div>
       </div>
       <div class="main__rolls">
+        <h4 class="main__rolls__title">Акции</h4>
         <product-card
             v-for="(roll, idx) in rolls"
             :key="idx"
