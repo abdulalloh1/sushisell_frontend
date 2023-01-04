@@ -78,7 +78,7 @@
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/"
+          to="/sales"
       >
         <div class="app-footer__home">
           <svg data-src="/img/icons/gift.svg"/>
