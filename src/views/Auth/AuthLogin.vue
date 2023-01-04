@@ -2,10 +2,11 @@
     lang="ts"
     setup
 >
-import { reactive, ref } from 'vue';
-import AppInput from '@/components/UI/AppInput/AppInput.vue';
-import type { Login } from "@/types/auth";
+import { computed, reactive, ref } from 'vue';
 import { useAuthStore } from "@/store/parts/auth";
+import type { Login } from "@/types/auth";
+
+import AppInput from '@/components/UI/AppInput/AppInput.vue';
 import AppInputPhone from "@/components/UI/AppInputPhone/AppInputPhone.vue";
 
 const authStore = useAuthStore()
@@ -13,12 +14,17 @@ const authStore = useAuthStore()
 const placeholderPhone = 'Номер телефона'
 const placeholderPassword = 'Пароль'
 const placeholderConfirm = 'Повторить Пароль'
+
 const show = ref(false)
 const isDisabled = ref(false)
 
 const loginCredentials: Login = reactive({
   phone: '',
   password: ''
+})
+
+const computedSubmitBtnDisabled = computed(() => {
+  return !loginCredentials.phone.trim() || !loginCredentials.password.trim()
 })
 
 function showRegister() {
@@ -121,83 +127,10 @@ async function login () {
     <form
         class="auth__input-wrapper"
         v-else
+        @submit.prevent="login"
     >
       <h3 class="auth__title">
         Вход / регистрация
-      </h3>
-      <app-input
-          :placeholder="placeholderPhone"
-          :width="270"
-      ></app-input>
-      <app-input
-          :placeholder="placeholderPassword"
-          :width="270"
-      ></app-input>
-      <button
-          type="submit"
-          class="auth__btn"
-          :disabled="!isDisabled"
-      >Войти
-      </button>
-    </form>
-    <div class="auth__links">
-      <button
-          class="auth__link"
-          v-if="show"
-          @click="showRegister"
-      >Авторизация
-      </button>
-      <button
-          class="auth__link"
-          v-else
-          @click="showRegister"
-      >Регистрация
-      </button>
-      <button class="auth__link">Забыли пароль?</button>
-    </div>
-    <div
-        class="auth__contact"
-        tabindex="0"
-    >
-      <svg
-          data-v-6fdda0ab=""
-          data-v-4561fb79=""
-          width="16"
-          height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="external-confirm__button-svg"
-          >
-            <path
-                data-v-6fdda0ab=""
-                data-v-4561fb79=""
-                d="M1.20871 0L4.12001 0.105352C4.73321 0.127536 5.2774 0.514767 5.51241 1.09616L6.37323 3.2257C6.57359 3.72126 6.51967 4.28669 6.22953 4.73306L5.12664 6.42999C5.77962 7.36767 7.55574 9.56462 9.43638 10.8506L10.8387 9.98758C11.1951 9.76822 11.6218 9.7031 12.0251 9.80646L14.8128 10.5213C15.5543 10.7115 16.0539 11.4225 15.9953 12.2041L15.8164 14.5908C15.7535 15.4283 15.068 16.0855 14.2544 15.9909C3.51395 14.7421 -2.78445 -2.39999e-05 1.20871 0Z"
-                fill="#140E38"
-            ></path>
-          </svg>
-          <p class="auth__contact__text">Звонок</p>
-        </div>
-      </div>
-      <a
-          href="#"
-          class="auth__accord"
-      >Нажимая «Подтвердить»
-        вы соглашаетесь с <b>условиями обработки персональных данных</b>
-      </a>
-      <button
-          type="submit"
-          class="auth__btn"
-      >ПОДТВЕРДИТЬ
-      </button>
-    </form>
-    <form
-        @submit.prevent="login"
-        class="auth__input-wrapper"
-        v-else
-    >
-      <h3 class="auth__title">
-        Вход/регистрация
       </h3>
       <app-input-phone
           v-model="loginCredentials.phone"
@@ -211,6 +144,7 @@ async function login () {
       <button
           type="submit"
           class="auth__btn"
+          :disabled="computedSubmitBtnDisabled"
       >
         Войти
       </button>
@@ -220,20 +154,17 @@ async function login () {
           class="auth__link"
           v-if="show"
           @click="showRegister"
-      >Авторизация
+      >
+        Авторизация
       </button>
       <button
           class="auth__link"
           v-else
           @click="showRegister"
-      >Регистрация
+      >
+        Регистрация
       </button>
       <button class="auth__link">Забыли пароль?</button>
     </div>
   </div>
 </template>
-
-<style
-    lang="scss"
-    src="./AuthPage.scss"
-/>

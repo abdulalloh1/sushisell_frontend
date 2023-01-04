@@ -3,12 +3,10 @@
     setup
 >
 import { reactive, ref } from 'vue';
-// import AppChips from '@/components/UI/Chips/AppChips.vue';
 import AppChips from '@/components/UI/Chips/AppChips.vue';
 import AppInput from '@/components/UI/AppInput/AppInput.vue'
-import Flickity from '../../components/UI/Flickity/Flickity.vue';
+import Flickity from '@/components/UI/Flickity/Flickity.vue';
 import ProductCard from '@/components/ProductCard/ProductCard.vue';
-import AppCheckBox from '@/components/UI/AppCheckBox/AppCheckBox.vue';
 
 const dataInput = {
   title: 'Поиск по названию, например: суши калифорния',
@@ -20,34 +18,34 @@ const images = reactive([
     img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-2.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-3.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-4.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-5.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-6.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-7.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-8.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-8.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-5.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
   {
-    img: '/public/img/slider-roll-6.jpeg'
+    img: '/public/img/slider-roll.jpeg'
   },
 ])
 const state = reactive({
@@ -259,8 +257,3 @@ const flickityOptions = {
     </div>
   </div>
 </template>
-
-<style
-    lang="scss"
-    src="./MainPage.scss"
-/>

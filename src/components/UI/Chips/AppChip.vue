@@ -48,7 +48,7 @@ const componentType = computed(() => {
       class="chip__close-btn"
       @click="remove"
     >
-      <svg data-src="/img/icons/close.svg"/>
+      <svg data-src="/img/icons/closeCircle.svg"/>
     </button> -->
   </component>
 </template>

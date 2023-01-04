@@ -158,7 +158,7 @@ const toggleInputFocus = (val: boolean) => {
           <svg
               v-if="isError"
               class="app-input__append__info-svg"
-              data-src="/images/icons/info.svg"
+              data-src="/img/icons/info.svg"
           />
         </div>
       </div>

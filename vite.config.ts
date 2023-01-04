@@ -5,7 +5,6 @@ import { defineConfig } from 'vite'
 
 const url = new URL('./src', import.meta.url);
 
-// https://vitejs.dev/config/
 export default defineConfig({
     plugins: [vue()],
     resolve: {
@@ -17,8 +16,9 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 additionalData: `
-          @import "${ url }/assets/scss/parts/_mixins.scss";
-          @import "${ url }/assets/scss/parts/_media.scss";`
+                  @import "${ url }/assets/scss/parts/_mixins.scss";
+                  @import "${ url }/assets/scss/parts/_media.scss";
+              `
             }
         }
     },
