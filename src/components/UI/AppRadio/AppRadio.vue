@@ -37,7 +37,7 @@ function change() {
 </script>
 
 <template>
-  <div class="radio">
+  <div class="app-radio">
     <input
         type="radio"
         :id="`${randomID}`"
@@ -47,9 +47,9 @@ function change() {
     >
     <label
         :for="`${randomID}`"
-        class="checkbox__label"
+        class="app-radio__label"
     >
-        <span class="checkbox__label__text">
+        <span class="app-radio__label__text">
             <slot name="label"/>
         </span>
     </label>
