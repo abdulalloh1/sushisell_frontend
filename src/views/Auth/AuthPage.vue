@@ -6,6 +6,7 @@ const placeholderPhone = 'Номер телефона'
 const placeholderPassword = 'Пароль'
 const placeholderConfirm = 'Повторить Пароль'
 const show = ref(false)
+const isDisabled = ref(false)
 
 function showRegister() {
     return show.value = !show.value
@@ -15,13 +16,15 @@ function showRegister() {
 
 <template>
     <div class="auth">
-        <form class="auth__input-wrapper" v-if="show">
+        <form class="auth__input-wrapper register" v-if="show">
             <h3 class="auth__title">
                 регистрация
             </h3>
-            <app-input :placeholder="placeholderPhone" :width="270"></app-input>
-            <app-input :placeholder="placeholderPassword" :width="270"></app-input>
-            <app-input :placeholder="placeholderConfirm" :width="270"></app-input>
+            <div class="auth__inputs">
+                <app-input :placeholder="placeholderPhone" :width="270"></app-input>
+                <app-input :placeholder="placeholderPassword" :width="270"></app-input>
+                <app-input :placeholder="placeholderConfirm" :width="270"></app-input>
+            </div>
             <p class="auth__text">Куда отправить код для входа?</p>
             <div class="auth__infos">
                 <div class="auth__contact" tabindex="0">
@@ -44,17 +47,17 @@ function showRegister() {
                 </div>
             </div>
             <a href="#" class="auth__accord">Нажимая «Подтвердить»
-                вы соглашаетесь с <b>условиями обработки персональных данных</b>
+                вы соглашаетесь с <span>условиями обработки персональных данных</span>
             </a>
-            <button type="submit" class="auth__btn">ПОДТВЕРДИТЬ</button>
+            <button type="submit" class="auth__btn confirm" :disabled="!isDisabled">ПОДТВЕРДИТЬ</button>
         </form>
         <form class="auth__input-wrapper" v-else>
             <h3 class="auth__title">
-                Вход/регистрация
+                Вход / регистрация
             </h3>
             <app-input :placeholder="placeholderPhone" :width="270"></app-input>
             <app-input :placeholder="placeholderPassword" :width="270"></app-input>
-            <button type="submit" class="auth__btn">Войти</button>
+            <button type="submit" class="auth__btn" :disabled="!isDisabled">Войти</button>
         </form>
         <div class="auth__links">
             <button class="auth__link" v-if="show" @click="showRegister">Авторизация</button>

@@ -15,10 +15,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+#app {
+  height: 100vh;
+}
+
 .page {
   padding-top: 100px;
   padding-bottom: calc(58px + 15px);
   max-width: 767px;
+  height: auto;
   margin-right: auto;
   margin-left: auto;
 }
