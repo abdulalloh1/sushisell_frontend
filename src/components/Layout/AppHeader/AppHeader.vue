@@ -2,18 +2,31 @@
     lang="ts"
     setup
 >
-import { useCitiesStore } from "@/store/parts/cities";
 import { ref } from "vue";
+import { useCitiesStore } from "@/store/parts/cities";
+import { useSettingStore } from "@/store/parts/setting";
+
+// Components
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
 import AppChip from "@/components/UI/Chips/AppChip.vue";
 import AppRadio from "@/components/UI/AppRadio/AppRadio.vue";
 
+// Store
 const citiesStore = useCitiesStore()
+const settingStore = useSettingStore()
+
+// State
 const isCitiesListModalOpen = ref(false)
 const isMessageModalOpen = ref(false)
 const selectedCity = ref('')
+
+// Functions
 function openCitiesListModal() {
   isCitiesListModalOpen.value = true
+}
+
+function openMessageModal() {
+  isMessageModalOpen.value = true
 }
 </script>
 
@@ -22,34 +35,61 @@ function openCitiesListModal() {
   <div class="app-header">
     <div class="app-header-wrapper">
       <div class="app-header__logo">
-        <img alt="" src="/public/img/sushilogo.svg">
+        <img
+            alt=""
+            src="/public/img/sushilogo.svg"
+        >
       </div>
-      <button class="app-header__city" @click="openCitiesListModal">
-        <svg data-src="img/location.svg" />
+      <button
+          class="app-header__city"
+          @click="openCitiesListModal"
+      >
+        <svg data-src="img/location.svg"/>
         {{ citiesStore.activeCity }}
       </button>
-      <div class="app-header__msg">
-        <img alt="" src="/public/img/message.png">
-      </div>
-      <a href="tel:+78006002665" class="app-header__tel">
-        <svg data-src="img/phone.svg" />
+      <button
+          class="app-header__msg"
+          @click="openMessageModal"
+      >
+        <img
+            alt=""
+            src="/public/img/message.png"
+        >
+      </button>
+      <a
+          href="tel:+78006002665"
+          class="app-header__tel"
+      >
+        <svg data-src="img/phone.svg"/>
       </a>
     </div>
 
     <teleport to="body">
-      <modal-dialog v-model="isCitiesListModalOpen" :close-icon="false" class="cities-list-modal-dialog" size="full">
+      <modal-dialog
+          v-model="isCitiesListModalOpen"
+          :close-icon="false"
+          class="cities-list-modal-dialog"
+          size="full"
+      >
         <template #header>
           <h2 class="modal__title">Выберите город</h2>
-          <a href="tel:+78006002665" class="modal__header__phone">
-            <svg data-src="img/phone.svg" />
+          <a
+              href="tel:+78006002665"
+              class="modal__header__phone"
+          >
+            <svg data-src="img/phone.svg"/>
           </a>
         </template>
         <template #body>
           <div class="cities-list-modal-dialog__list">
-            <div v-for="(city, index) in citiesStore.cities" class="app-radio">
-              <app-radio v-model="selectedCity" :value="city.name"/>
-              <label for="" class="app-radio__label">{{ city.name }}</label>
-            </div>
+            <app-radio
+                v-for="(city, index) in citiesStore.cities"
+                v-model="selectedCity"
+                :key="index"
+                :value="city.name"
+            >
+              <template #label>{{ city.name }}</template>
+            </app-radio>
           </div>
         </template>
       </modal-dialog>
@@ -65,11 +105,6 @@ function openCitiesListModal() {
     </teleport>
   </div>
 </template>
-
-
-
-
-
 
 <style
     lang="scss"
