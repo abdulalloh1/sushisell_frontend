@@ -6,12 +6,12 @@ import { computed, defineEmits, defineProps } from 'vue';
 
 const props = defineProps({
   modelValue: {
-    type: [String, Array],
-    default: false
+    type: [String, Number],
+    default: ''
   },
   value: {
-    type: String,
-    default: ''
+    type: [String, Number],
+    required: true
   },
 })
 
@@ -21,7 +21,7 @@ const emit = defineEmits([
 
 const randomID = Math.floor(Math.random() * 100)
 
-const localValue = computed({
+const computedModelValue = computed({
   get() {
     return props.modelValue
   },
@@ -29,6 +29,10 @@ const localValue = computed({
     emit('update:modelValue', newValue)
   }
 })
+
+function change() {
+  computedModelValue.value = props.value
+}
 
 </script>
 
@@ -38,7 +42,8 @@ const localValue = computed({
         type="radio"
         :id="`${randomID}`"
         :value="value"
-        v-model="localValue"
+        :checked="computedModelValue === value"
+        @change="change"
     >
     <label
         :for="`${randomID}`"

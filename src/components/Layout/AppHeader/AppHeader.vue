@@ -88,10 +88,9 @@ function changeCity (id: number) {
           <div class="cities-list-modal-dialog__list">
             <app-radio
                 v-for="(city, index) in citiesStore.cities"
-                v-model="citiesStore.activeCity"
+                v-model="citiesStore.activeCity.id"
                 :key="index"
-                item-label="name"
-                item-value="id"
+                :value="city.id"
                 @click="changeCity(city.id)"
             >
               <template #label>{{ city.name }}</template>
