@@ -5,7 +5,6 @@
 
 </script>
 
-
 <template>
   <div class="app-footer">
     <div class="app-footer-wrapper">
@@ -57,7 +56,7 @@
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/auth"
+          to="/"
       >
         <div class="app-footer__home">
           <svg
@@ -79,19 +78,17 @@
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/sale"
+          to="/"
       >
         <div class="app-footer__home">
-          <img
-              alt=""
-              src="/public/img/gift.svg"
-          >
+          <svg data-src="/img/icons/gift.svg"/>
         </div>
+
         <p class="app-footer__text">Акции</p>
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/contact"
+          to="/"
       >
         <div class="app-footer__home">
           <svg
@@ -113,7 +110,7 @@
       </router-link>
       <router-link
           class="app-footer__btn"
-          to="/basket"
+          to="/"
       >
         <div class="app-footer__home">
           <svg

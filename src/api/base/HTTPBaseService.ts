@@ -32,4 +32,9 @@ const instance = axios.create({
     baseURL: import.meta.env.VITE_API_URL + 'v2'
 })
 
+const instance2 = axios.create({
+    baseURL: import.meta.env.VITE_AUTH_URL
+})
+
 export const axiosInstanceV1 = setupInterceptorsTo(instance)
+export const axiosInstanceV2 = setupInterceptorsTo(instance2)

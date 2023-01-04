@@ -39,16 +39,13 @@ function changeCity (id: number) {
   <div class="app-header">
     <div class="app-header-wrapper">
       <div class="app-header__logo">
-        <img
-            alt=""
-            src="/public/img/sushilogo.svg"
-        >
+        <svg data-src="/img/icons/sushilogo.svg" />
       </div>
       <button
           class="app-header__city"
           @click="openCitiesListModal"
       >
-        <svg data-src="img/location.svg"/>
+        <svg data-src="/img/icons/location.svg"/>
         {{ citiesStore.activeCity.name }}
       </button>
       <button
@@ -57,14 +54,14 @@ function changeCity (id: number) {
       >
         <img
             alt=""
-            src="/public/img/message.png"
+            src="/img/message.png"
         >
       </button>
       <a
           href="tel:+78006002665"
           class="app-header__tel"
       >
-        <svg data-src="img/phone.svg"/>
+        <svg data-src="/img/icons/phone.svg"/>
       </a>
     </div>
 
@@ -81,7 +78,7 @@ function changeCity (id: number) {
               href="tel:+78006002665"
               class="modal__header__phone"
           >
-            <svg data-src="img/phone.svg"/>
+            <svg data-src="/img/icons/phone.svg"/>
           </a>
         </template>
         <template #body>
@@ -102,7 +99,7 @@ function changeCity (id: number) {
       <modal-dialog v-model="isMessageModalOpen" class="message-modal-dialog">
         <template #body>
           <app-chip class="message-modal-dialog__chip message-modal-dialog__chip--telegram">
-            <svg data-src="/img/telegram.svg" />
+            <svg data-src="/img/icons/telegram.svg" />
             Написать в Telegram
           </app-chip>
         </template>

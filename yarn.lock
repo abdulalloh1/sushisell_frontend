@@ -7320,10 +7320,10 @@ markdown-escapes@^1.0.0:
   resolved "https://registry.yarnpkg.com/markdown-escapes/-/markdown-escapes-1.0.4.tgz#c95415ef451499d7602b91095f3c8e8975f78535"
   integrity sha512-8z4efJYk43E0upd0NbVXwgSTQs6cT3T06etieCMEg7dRbzCbxUCK/GHlX8mhHRDcp+OLlHkPKsvqQTCvsRl2cg==
 
-maska@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/maska/-/maska-2.1.2.tgz#07a991d0770b2131e3e2bc6adfcd75fea7ebb81b"
-  integrity sha512-+y8iTDvxHeuSpqY+Xcvdz7EwduOAoyo7dU0HBrPxkHJKIRetubNzr76F8ma0U7rmUcKbhLq16Gi/b34OSIWHOw==
+maska@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/maska/-/maska-2.1.3.tgz#2cc89809922f1a99eec3047ad24e4b4f5750e83b"
+  integrity sha512-RpTo16wmdXC4HeNMckq84QG0XIANrIg5O5lW0pinNCOkYyugOBcHLY5xZIXUU3Cz4AOgTh/QH7Zp/4BK2zGm3Q==
 
 md5.js@^1.3.4:
   version "1.3.5"

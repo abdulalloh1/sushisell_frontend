@@ -1,8 +1,7 @@
-<script
-    lang="ts"
-    setup
->
-import { computed, ref, type Ref, useSlots } from 'vue';
+<script lang="ts" setup>
+import type { Ref } from 'vue';
+import { computed, ref, useSlots } from 'vue';
+import { vMaska } from 'maska';
 
 const slots = useSlots();
 const props = defineProps({
@@ -54,7 +53,6 @@ const props = defineProps({
     default: false
   }
 });
-
 const prependSlot: Ref<Element | null> = ref(null);
 const appendSlot: Ref<Element | null> = ref(null);
 const isInputFocused = ref(false);
@@ -71,17 +69,25 @@ const computedModelValue = computed({
   }
 });
 
+const isExistLabel = computed(() => {
+  return slots.label
+})
+
+const computedLabelStyleAsPlaceholder = computed(() => {
+  return slots.label && !props.modelValue && !isInputFocused.value;
+});
+
 const computePaddingFromLeft = computed(() => {
   if (!prependSlot?.value) return;
 
   const prependSlotWidth = prependSlot.value.clientWidth + 8;
-  return prependSlotWidth ? `${ prependSlotWidth }px` : '0';
+  return prependSlotWidth ? `${prependSlotWidth}px` : '0';
 });
 
 const computePaddingFromRight = computed(() => {
   if (!appendSlot?.value) return;
   const appendSlotWidth = appendSlot.value.clientWidth + 8;
-  return appendSlotWidth ? `${ appendSlotWidth }px` : '0';
+  return appendSlotWidth ? `${appendSlotWidth}px` : '0';
 });
 
 const computedStyles = computed(() => {
@@ -99,7 +105,6 @@ const computedWidth = computed(() => {
 
   return false;
 });
-
 const computedHeight = computed(() => {
   if (props.height) return props.height + (typeof props.height === 'number' ? 'px' : '');
 
@@ -109,43 +114,66 @@ const computedHeight = computed(() => {
 const toggleInputFocus = (val: boolean) => {
   isInputFocused.value = val;
 }
+
 </script>
 
 <template>
-  <div class="app-input">
-    <div class="app-input__row">
-      <div
-          v-if="$slots.prepend"
-          v-once
-          ref="prependSlot"
-          class="app-input__prepend"
-      >
-        <slot name="prepend"/>
+  <div>
+    <slot name="label"/>
+    <div
+        :class="['app-input', {
+        'app-input--large': large,
+        'app-input--is-error': isError,
+        'app-input--read-only': readonly,
+        'app-input--no-label': !isExistLabel
+      }]"
+    >
+      <div class="app-input__row">
+        <div
+            v-if="$slots.prepend"
+            v-once
+            ref="prependSlot"
+            class="app-input__prepend"
+        >
+          <slot name="prepend"/>
+        </div>
+        <input
+            :readonly="readonly"
+            :type="type"
+            :placeholder="placeholder"
+            v-maska
+            :data-maska="mask"
+            v-model="computedModelValue"
+            :style="computedStyles"
+            class="app-input__field"
+            @focus="toggleInputFocus(true)"
+            @focusout="toggleInputFocus(false)"
+        />
+        <div
+            v-if="$slots.append || isError"
+            ref="appendSlot"
+            class="app-input__append"
+        >
+          <slot name="append"/>
+          <svg
+              v-if="isError"
+              class="app-input__append__info-svg"
+              data-src="/img/icons/info.svg"
+          />
+        </div>
       </div>
-      <input
-          :placeholder="props.placeholder"
-          :readonly="props.readonly"
-          :type="props.type"
-          :style="computedStyles"
-          class="app-input__field"
-          @focus="toggleInputFocus(true)"
-          @focusout="toggleInputFocus(false)"
-      />
-      <div
-          v-if="$slots.append || isError"
-          ref="appendSlot"
-          class="app-input__append"
-      >
-        <slot name="append"/>
-        <!-- <svg v-if="isError" class="app-input__append__info-svg" data-src="/images/icons/info.svg" /> -->
-      </div>
+      <transition name="app-input__error-text">
+        <p
+            v-if="isError && errorText"
+            class="app-input__error-text"
+        >
+          {{ errorText }}
+        </p>
+      </transition>
     </div>
   </div>
+
 </template>
 
-<style
-    lang="scss"
-    src="./AppInput.scss"
->
 
-</style>
+<style lang="scss" src="./AppInput.scss"/>

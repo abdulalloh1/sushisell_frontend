@@ -73,7 +73,7 @@ onMounted(() => {
                 @click="closeModal()"
             >
               <svg
-                  data-src="/images/icons/close.svg"
+                  data-src="/img/icons/close.svg"
                   height="24"
                   width="24"
               />
