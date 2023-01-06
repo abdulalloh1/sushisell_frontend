@@ -6,3 +6,7 @@ export function getScrollBarWidth() {
   el.remove();
   return width;
 }
+
+export function generatorRandomID () {
+  return Math.floor(Math.random() * Date.now()).toString(16)
+}

@@ -2,189 +2,70 @@
     lang="ts"
     setup
 >
-import { reactive, ref } from 'vue';
-import AppChips from '@/components/UI/Chips/AppChips.vue';
+import type { Ref } from "vue";
+import { onMounted, onUnmounted, reactive, ref } from 'vue';
+import { useMenuStore } from "@/store/parts/menu";
 import AppInput from '@/components/UI/AppInput/AppInput.vue'
 import Flickity from '@/components/UI/Flickity/Flickity.vue';
 import ProductCard from '@/components/ProductCard/ProductCard.vue';
+import AppChip from "@/components/UI/Chips/AppChip.vue";
 
-const dataInput = {
-  title: 'Поиск по названию, например: суши калифорния',
-  type: 'search'
-}
+// Store
+const menuStore = useMenuStore()
 
-const images = reactive([
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-  {
-    img: '/public/img/slider-roll.jpeg'
-  },
-])
-const state = reactive({
-  categories: [
-    {
-      value: "sale",
-      label: 'Акции',
-    },
-    {
-      value: "sets",
-      label: 'Наборы',
-    },
-    {
-      value: "rolls",
-      label: 'Роллы',
-    },
-    {
-      value: "baked",
-      label: 'Запеченные',
-    },
-    {
-      value: "sushi",
-      label: 'Суши',
-    },
-    {
-      value: "hot",
-      label: 'Горячее',
-    },
-    {
-      value: "business-lunch",
-      label: 'Бизнес - ланч',
-    },
-    {
-      value: "cakes",
-      label: 'Десерты',
-    },
-    {
-      value: "different",
-      label: 'Разное',
-    },
-  ],
-  selectedCategories: []
-});
-
-const rolls = [
-  {
-    Image: '/public/img/roll-1.webp',
-    title: 'Отвал Башки',
-    price: 319,
-    spices: [
-      {
-        value: 'no-sesame',
-        label: 'Без Кунжута'
-      },
-      {
-        value: 'no-cucmber',
-        label: 'Без Огурца'
-      },
-    ],
-    class: 'sale'
-  },
-  {
-    Image: '/public/img/roll-1.webp',
-    title: 'Отвал Башки',
-    price: 319,
-    spices: [
-      {
-        value: 'no-sesame',
-        label: 'Без Кунжута'
-      },
-      {
-        value: 'no-cucmber',
-        label: 'Без Огурца'
-      },
-    ],
-    class: 'sale'
-  },
-  {
-    Image: '/public/img/roll-1.webp',
-    title: 'Отвал Башки',
-    price: 319,
-    spices: [
-      {
-        value: 'no-sesame',
-        label: 'Без Кунжута'
-      },
-      {
-        value: 'no-cucmber',
-        label: 'Без Огурца'
-      },
-    ],
-    class: 'sale'
-  },
-  {
-    Image: '/public/img/roll-1.webp',
-    title: 'Отвал Башки',
-    price: 319,
-    spices: [
-      {
-        value: 'no-sesame',
-        label: 'Без Кунжута'
-      },
-      {
-        value: 'no-cucmber',
-        label: 'Без Огурца'
-      },
-    ],
-    class: 'sets'
-  },
-  {
-    Image: '/public/img/roll-1.webp',
-    title: 'Отвал Башки',
-    price: 319,
-    spices: [
-      {
-        value: 'no-sesame',
-        label: 'Без Кунжута'
-      },
-      {
-        value: 'no-cucmber',
-        label: 'Без Огурца'
-      },
-    ],
-    class: 'sets'
-  }
-]
-
-let show = ref(false)
-
-const toggleBtn = () => {
-  return show.value = !show.value
-}
-
+const categoryChipsRef = ref(null)
+const isFilterOpen = ref(false)
 const flickityOptions = {
   pageDots: false,
   groupCells: 1,
   fullscreen: true,
   wrapAround: true
 }
+const activeCategory: Ref<number> = ref(0)
+const isScrolling = ref(false)
+
+// Functions
+function toggleFilterVisibility () {
+  isFilterOpen.value = !isFilterOpen.value
+}
+
+function selectCategory (id: number) {
+  isScrolling.value = true
+  const element = document.getElementById(`categoryID=${id}`)
+  window.scrollTo({top: element.offsetTop - 120})
+}
+
+function activateChip () {
+  const elementOffsetTop = categoryChipsRef.value.offsetTop
+  const scrollTop = window.scrollY
+
+  if(elementOffsetTop <= scrollTop) {
+    categoryChipsRef.value.children[0].classList.add('chips--fixed')
+    document.querySelector('.app-header').classList.add('app-header--no-shadow')
+  }
+  else {
+    categoryChipsRef.value.children[0].classList.remove('chips--fixed')
+    document.querySelector('.app-header').classList.remove('app-header--no-shadow')
+  }
+
+  const categoryProducts = document.querySelectorAll('.main__rolls')
+  categoryProducts.forEach(category => {
+    let scrollTop = window.scrollY;
+    let offset = category.offsetTop;
+
+    if(scrollTop + 120 >= offset) {
+      activeCategory.value = +category.id.replace('categoryID=', '')
+    }
+  })
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', activateChip)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', activateChip)
+})
 
 </script>
 
@@ -196,32 +77,41 @@ const flickityOptions = {
             ref="flickity"
             :options="flickityOptions"
         >
-          <div
-              v-for="(item, idx) in images"
-              :key="idx"
-              class="main-slider-item"
-          >
-            <img
-                :src="item.img"
-                alt="main page slider image"
-                class="main-slider-item__img"
-            >
-          </div>
+<!--          <div-->
+<!--              v-for="(item, idx) in images"-->
+<!--              :key="idx"-->
+<!--              class="main-slider-item"-->
+<!--          >-->
+<!--            <img-->
+<!--                :src="item.img"-->
+<!--                alt="main page slider image"-->
+<!--                class="main-slider-item__img"-->
+<!--            >-->
+<!--          </div>-->
         </flickity>
       </div>
-      <div class="main__chips">
-        <app-chips
-            v-model="state.selectedCategories"
-            :items="state.categories"
-        />
+      <div
+          ref="categoryChipsRef"
+          class="main__chips"
+      >
+        <div class="chips">
+          <app-chip
+              v-for="(category, index) in menuStore.computedCategories"
+              :key="index"
+              :class="{'chip--active': activeCategory === category.id}"
+              @click="selectCategory(category.id)"
+          >
+            {{ category.name }}
+          </app-chip>
+        </div>
       </div>
-      <div :class="['main-control__items', { 'show': show }]">
+      <div :class="['main-control__items', { 'show': isFilterOpen }]">
         <div class="main-control__btns">
           <button
               class="main-control__btn"
-              @click="toggleBtn"
+              @click="toggleFilterVisibility"
           >
-            {{ show ? 'Спрятать фильтр' : 'Показать фильтр' }}
+            {{ isFilterOpen ? 'Спрятать фильтр' : 'Показать фильтр' }}
           </button>
           <button class="main-control__icon">
             <svg
@@ -241,19 +131,26 @@ const flickityOptions = {
         </div>
         <div class="main-control__input">
           <app-input
-              :placeholder="dataInput.title"
-              :type="dataInput.type"
-          >
-          </app-input>
+              type="search"
+              placeholder="Поиск по названию, например: суши калифорния"
+          />
         </div>
       </div>
-      <div class="main__rolls">
-        <h4 class="main__rolls__title">Акции</h4>
-        <product-card
-            v-for="(roll, idx) in rolls"
-            :key="idx"
-            :roll="roll"
-        />
+      <div
+          v-for="(category, categoryIndex) in menuStore.computedCategories"
+          class="main__rolls"
+          :key="categoryIndex"
+          :id="`categoryID=${category.id}`"
+      >
+        <h4 class="main__rolls__title">{{ category.name }}</h4>
+        <template v-if="category.products.length">
+          <product-card
+              v-for="(product, productIndex) in category.products"
+              :key="productIndex"
+              :roll="product"
+          />
+        </template>
+        <h4 class="main__rolls__description">{{ category.description }}</h4>
       </div>
     </div>
   </div>

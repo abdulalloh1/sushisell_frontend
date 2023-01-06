@@ -17,6 +17,10 @@ const props = defineProps({
   closeIcon: {
     type: Boolean,
     default: true
+  },
+  backIcon: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -66,6 +70,13 @@ onMounted(() => {
       <div class="modal__wrapper">
         <div class="modal__window">
           <div class="modal__header">
+            <button
+                v-if="backIcon"
+                class="modal__back"
+                @click="closeModal()"
+            >
+              <svg data-src="/img/icons/back.svg"/>
+            </button>
             <slot name="header"/>
             <button
                 v-if="closeIcon"

@@ -1,23 +1,40 @@
 import { defineStore } from "pinia";
 import api from '@/api'
+import { useMenuStore } from "@/store/parts/menu";
+
+export interface City {
+    name: string,
+    id: number
+}
 
 export const useCitiesStore = defineStore('cities', {
     state: () => ({
-        cities: [],
-        activeCity: {
-            id: 10,
-            name: 'Красноярск'
-        }
+        isCitiesFetching: false,
+        cities: <City[]> [],
+        activeCity: <City> {}
     }),
     actions: {
         async getCities() {
+            this.isCitiesFetching = true
             const { data } = await api.cities.getAll()
+            this.isCitiesFetching = false
             this.cities = data.data
+
+            const activeCity = localStorage.getItem('activeCity')
+
+            if(activeCity) {
+                await this.changeActiveCity(activeCity)
+            }
         },
 
-        changeActiveCity (id: number) {
-            const selectedCity = this.cities.find(city => city.id === id)
-            this.activeCity = selectedCity
+        async changeActiveCity (id: number) {
+            const selectedCity: City = this.cities.find(city => city.id === +id)
+            this.activeCity = { ...selectedCity }
+
+            localStorage.setItem('activeCity', this.activeCity.id)
+
+            const catalogStore = useMenuStore()
+            await catalogStore.getMenu()
         }
     }
 })

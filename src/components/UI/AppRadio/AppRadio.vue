@@ -32,6 +32,7 @@ const computedModelValue = computed({
 
 function change() {
   computedModelValue.value = props.value
+  emit('change')
 }
 
 </script>

@@ -3,31 +3,45 @@
     setup
 >
 import 'external-svg-loader'
-import AppHeader from "./components/Layout/AppHeader/AppHeader.vue";
-import AppFooter from "./components/Layout/AppFooter/AppFooter.vue";
-
+import { onMounted, ref } from "vue";
 import { useCitiesStore } from "@/store/parts/cities";
-import { onMounted } from "vue";
 import { useSettingStore } from "@/store/parts/setting";
-import AppToast from "@/components/UI/AppToast/AppToast.vue";
+import { useMenuStore } from "@/store/parts/menu";
 
+// Components
+import AppHeader from "@/components/Layout/AppHeader/AppHeader.vue";
+import AppToast from "@/components/UI/AppToast/AppToast.vue";
+import Appfooter from "@/components/Layout/AppFooter/Appfooter.vue";
+
+// State
+const isPreloaderActive = ref(true)
+
+// Store
 const citiesStore = useCitiesStore()
 const settingStore = useSettingStore()
+const menuStore = useMenuStore()
 
 onMounted(() => {
   Promise.all([
     citiesStore.getCities(),
-    settingStore.getSetting()
+    settingStore.getSetting(),
+    menuStore.getMenu()
   ])
+      .finally(() => {
+        isPreloaderActive.value = false
+      })
 })
 </script>
 
 <template>
-  <app-header/>
-  <router-view/>
-  <app-footer/>
+    <template v-if="!isPreloaderActive">
+      <app-header />
+      <router-view />
+      <appfooter />
 
-  <app-toast />
+      <app-toast />
+    </template>
+
 </template>
 
 <style lang="scss">

@@ -1,8 +1,11 @@
 .product-card {
   display: flex;
-  max-width: 767px;
-  margin-right: auto;
-  margin-left: auto;
+  width: 100%;
+  margin: 0 auto;
+
+  & + & {
+    margin-top: 20px;
+  }
 
   &.sets {
     display: flex;
@@ -11,20 +14,25 @@
 
   &__img {
     width: 60%;
+    padding-right: 15px;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
+
+    @include max-xs {
+      width: 50%;
+    }
   }
 
   &__items {
     width: 40%;
-  }
 
-  &__text {
-    min-height: 105px;
+    @include max-xs {
+      width: 50%;
+    }
   }
 
   &__name {
@@ -44,14 +52,9 @@
   }
 
   &__wishes {
+    width: fit-content;
     color: #009846;
-    max-height: 21px;
-    transition: all 0.3s;
-    overflow: hidden;
 
-    &.show {
-      max-height: 105px;
-    }
     &__btn {
       text-decoration: underline;
       color: #009846;
@@ -59,22 +62,17 @@
     }
   }
 
-  &__label-wrapper {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  &__label {
-    margin-left: -7px;
-    font-size: 14px;
-    color: #212121;
+  &__checkbox {
+    & + & {
+      margin-top: 10px;
+    }
   }
 
   &__order {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
+    margin-top: 14px;
   }
 
   &__btn {
@@ -94,5 +92,13 @@
     line-height: 16px;
     padding: 6px 18px;
     font-weight: 700;
+
+    &:disabled {
+      background: #eaeaea;
+      border: none;
+      color: #444;
+      text-shadow: none;
+      cursor: not-allowed;
+    }
   }
 }

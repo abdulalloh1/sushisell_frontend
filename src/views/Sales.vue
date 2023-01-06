@@ -4,6 +4,6 @@
 
 <template>
   <div class="sales">
-    
+
   </div>
 </template>

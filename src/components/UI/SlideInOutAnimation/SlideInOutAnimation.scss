@@ -1,0 +1,19 @@
+@keyframes slideInOutAnimation {
+  0% {
+    max-height: 0;
+    top: 100%;
+  }
+}
+
+.slideInOutAnimation {
+  &-enter-active {
+    animation: slideInOutAnimation 400ms ease-out;
+    overflow: hidden;
+  }
+
+  &-leave-active {
+    animation: slideInOutAnimation 400ms ease-out;
+    animation-direction: reverse;
+    overflow: hidden;
+  }
+}

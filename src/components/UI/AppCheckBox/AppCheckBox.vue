@@ -1,5 +1,9 @@
-<script setup lang="ts">
-import {computed, defineEmits, defineProps} from "vue";
+<script
+    setup
+    lang="ts"
+>
+import { computed, defineEmits, defineProps } from "vue";
+import { generatorRandomID } from "@/utils/helper";
 
 const props = defineProps({
   modelValue: {
@@ -18,7 +22,7 @@ const props = defineProps({
 const emit = defineEmits([
   'change', 'update:modelValue'
 ])
-const randomID = Math.floor(Math.random() * 100)
+const randomID = generatorRandomID()
 
 const computedValue = computed(() => {
   if (typeof props.modelValue === 'object') {
@@ -64,9 +68,11 @@ function removeFromArray() {
 </script>
 
 <template>
-  <div :class="['checkbox', {
-    'checkbox--disabled': disabled
-}]">
+  <div
+      :class="['checkbox', {
+        'checkbox--disabled': disabled
+      }]"
+  >
     <input
         :id="`${randomID}`"
         :checked="computedChecked"
@@ -76,27 +82,17 @@ function removeFromArray() {
         type="checkbox"
         @change="change()"
     >
-    <label :for="`${randomID}`" class="checkbox__label">
-            <span class="checkbox__label__icon">
-                <svg width="12px" height="12px" viewBox="-1.6 -1.6 19.20 19.20" version="1.1"
-                     fill="#009846" stroke="#009846" stroke-width="1.6"
-                     transform="matrix(1, 0, 0, 1, 0, 0)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0">
-                        <rect x="-1.6" y="-1.6" width="19.20" height="19.20" rx="0" fill="#009846" strokewidth="0">
-                        </rect>
-                    </g>
-                    <g id="SVGRepo_iconCarrier">
-                        <rect width="16" height="16" id="icon-bound" fill="none"></rect>
-                        <rect x="2" y="2" width="12" height="12"></rect>
-                    </g>
-                </svg>
-            </span>
+    <label
+        :for="`${randomID}`"
+        class="checkbox__label"
+    >
+      <span class="checkbox__label__icon" />
       <span class="checkbox__label__text">
-                <slot name="label"/>
-            </span>
+          <slot name="label"/>
+      </span>
     </label>
   </div>
 </template>
 
 
-<style lang="scss" src="./AppCheckbox.scss"/>
+<style lang="scss" src="./AppCheckBox.scss"/>
