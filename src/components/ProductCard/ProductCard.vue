@@ -25,21 +25,26 @@ const selectedModifier = reactive({
 })
 
 const computedModifierGroupsIDs = computed(() => {
-  if(!props.roll.available_modifiers) return
+  if (!props.roll.modifier_groups) return
 
   const groupIDs: number[] = []
-  props.roll.available_modifiers.map(item => {
-    if(!groupIDs.includes(item.group_id)) groupIDs.push(item.group_id)
-  })
+  props.roll.available_modifiers
+      .sort(item => item.sort_order)
+      .map(item => {
+        if (!groupIDs.includes(item.group_id)) groupIDs.push(item.group_id)
+      })
 
   return groupIDs
 })
 const computedModifiers = computed(() => {
-  if(!computedModifierGroupsIDs.value.length) return
+  if (!computedModifierGroupsIDs.value.length) return
 
-  return computedModifierGroupsIDs.value.map(id => {
-    return props.roll.available_modifiers.filter(item => item.group_id === id)
-  })
+  return props.roll.modifier_groups
+      .sort(item => item.sort_order)
+      .map(group => {
+        group.products = props.roll.available_modifiers.filter(item => item.group_id === group.id)
+        return group
+      })
 })
 
 function toggleWishesList () {
@@ -145,10 +150,10 @@ function openModifiersModal () {
               :key="groupIndex"
           >
             <div class="product-modifiers-modal-dialog__items__title">
-              Выбрать ролл №{{ groupIndex + 1 }}
+              {{ group.title }}
             </div>
             <div
-                v-for="(product, productIndex) in group"
+                v-for="(product, productIndex) in group.products"
                 class="product-card"
                 :key="productIndex"
             >

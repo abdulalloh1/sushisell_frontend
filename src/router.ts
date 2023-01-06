@@ -6,6 +6,7 @@ import AuthRegistration from "@/views/Auth/AuthRegistration.vue";
 import Contacts from "@/views/Contacts.vue";
 import Cart from "@/views/Cart.vue";
 import Sales from "@/views/Sales.vue";
+import Profile from "@/views/Profile.vue";
 
 export const router = createRouter({
     history: createWebHistory(),
@@ -14,6 +15,11 @@ export const router = createRouter({
             path: "/",
             name: "Main",
             component: Main,
+        },
+        {
+            path: "/profile",
+            name: "Profile",
+            component: Profile,
         },
         {
             path: "/contacts",

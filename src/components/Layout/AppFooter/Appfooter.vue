@@ -8,22 +8,22 @@ const routes = ref([
     icon: '/img/icons/home.svg'
   },
   {
-    routeName: '',
+    routeName: 'Profile',
     title: 'Профиль',
     icon: '/img/icons/profile.svg'
   },
   {
-    routeName: 'Main',
+    routeName: 'Sales',
     title: 'Акции',
     icon: '/img/icons/gift.svg'
   },
   {
-    routeName: 'Main',
+    routeName: 'Contacts',
     title: 'Контакты',
     icon: '/img/icons/contacts.svg'
   },
   {
-    routeName: 'Main',
+    routeName: 'Cart',
     title: 'Корзина',
     icon: '/img/icons/cart.svg'
   }
