@@ -16,6 +16,7 @@ const props = defineProps({
 
 const emit = defineEmits(['add-to-cart'])
 
+const isActive = ref(false)
 const isWishesListOpen = ref(false)
 const selectedWishes = ref([])
 const isModifiersModalOpen = ref(false)
@@ -77,10 +78,14 @@ function openModifiersModal () {
 
 <template>
   <div
-      :class="roll.class"
-      class="product-card"
+      :class="['product-card', {
+        'product-card--active': isActive
+      }]"
   >
-    <div class="product-card__img">
+    <div
+        class="product-card__img"
+        @click="isActive = !isActive"
+    >
       <img
           :src="roll.photo ?? roll.image"
           alt=""

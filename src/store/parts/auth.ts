@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
             if(data.success) {
                 localStorage.setItem('accessToken', data.token)
                 this.isLoggedIn = true
-                return
+                return Promise.resolve()
             }
 
             toast.error(data.error_message)

@@ -56,7 +56,7 @@ const props = defineProps({
 const prependSlot: Ref<Element | null> = ref(null);
 const appendSlot: Ref<Element | null> = ref(null);
 const isInputFocused = ref(false);
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'focus', 'focusout']);
 
 const computedModelValue = computed({
   get() {
@@ -113,6 +113,8 @@ const computedHeight = computed(() => {
 
 const toggleInputFocus = (val: boolean) => {
   isInputFocused.value = val;
+  if(val) emit('focus')
+  else emit('focusout')
 }
 
 </script>
@@ -138,14 +140,14 @@ const toggleInputFocus = (val: boolean) => {
           <slot name="prepend"/>
         </div>
         <input
+            v-model="computedModelValue"
+            v-maska
+            class="app-input__field"
             :readonly="readonly"
             :type="type"
             :placeholder="placeholder"
-            v-maska
             :data-maska="mask"
-            v-model="computedModelValue"
             :style="computedStyles"
-            class="app-input__field"
             @focus="toggleInputFocus(true)"
             @focusout="toggleInputFocus(false)"
         />

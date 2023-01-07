@@ -8,6 +8,10 @@ button {
   background-color: unset;
   border: none;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 a {
