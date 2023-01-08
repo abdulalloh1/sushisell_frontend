@@ -108,6 +108,36 @@
     }
   }
 
+  &__quantityController {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+
+    &__btn {
+      font-size: 15px;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &--minus {
+        border: 1px solid #e5e5e5;
+        background-color: #fff;
+        color: #c62734;
+        margin-right: 8px;
+      }
+
+      &--plus {
+        margin-left: 8px;
+        color: #fff;
+        background: linear-gradient(180deg,#e15959,#e96f54);
+      }
+    }
+  }
+
   &--active {
     .product-card {
       &__img {

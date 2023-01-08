@@ -6,6 +6,7 @@ import { computed, reactive, ref } from 'vue';
 import AppCheckBox from '../UI/AppCheckBox/AppCheckBox.vue';
 import SlideInOutAnimation from "@/components/UI/SlideInOutAnimation/SlideInOutAnimation.vue";
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
+import { useCartStore } from "@/store/parts/cart";
 
 const props = defineProps({
   roll: {
@@ -24,6 +25,7 @@ const selectedModifier = reactive({
   groupIDs: [],
   IDs: []
 })
+const cartStore = useCartStore()
 
 const computedModifierGroupsIDs = computed(() => {
   if (!props.roll.modifier_groups) return
@@ -54,6 +56,8 @@ function toggleWishesList () {
 
 function makeOrder () {
   if(props.roll.available_modifiers?.length) return openModifiersModal()
+
+  cartStore.addRemoveProduct(props.roll.id, 1)
 }
 
 function addRemoveModifier (groupID, id) {
@@ -72,6 +76,14 @@ function addRemoveModifier (groupID, id) {
 
 function openModifiersModal () {
   isModifiersModalOpen.value = true
+}
+
+function addRemoveProduct (action: string) {
+  if(action === 'plus') props.roll.quantity += 1
+  else if (action === 'minus') props.roll.quantity -= 1
+
+  cartStore.addRemoveProduct(props.roll.id, props.roll.quantity)
+
 }
 
 </script>
@@ -120,11 +132,30 @@ function openModifiersModal () {
       <div class="product-card__order">
         <p class="product-card__price">{{ roll.price }} ₽</p>
         <button
+            v-if="!roll.quantity"
             class="product-card__btn"
             @click="makeOrder"
         >
           Заказать
         </button>
+        <div
+            v-else
+            class="product-card__quantityController"
+        >
+          <button
+              class="product-card__quantityController__btn product-card__quantityController__btn--minus"
+              @click="addRemoveProduct('minus')"
+          >
+            -
+          </button>
+          {{ roll.quantity }}
+          <button
+              class="product-card__quantityController__btn product-card__quantityController__btn--plus"
+              @click="addRemoveProduct('plus')"
+          >
+            +
+          </button>
+        </div>
       </div>
     </div>
     <teleport to="body">

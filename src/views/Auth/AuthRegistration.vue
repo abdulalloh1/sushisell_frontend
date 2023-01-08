@@ -11,9 +11,11 @@ import api from "@/api";
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
 import ProgressLinear from "@/components/UI/ProgressLinear/ProgressLinear.vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "@/store/parts/auth";
 
-const router = useRouter()
 const { toast } = useToast()
+const router = useRouter()
+const authStore = useAuthStore()
 const inputRef = ref(null)
 const registerFields: Register = reactive({
   phone: '',
@@ -73,7 +75,9 @@ async function registerCheck () {
   })
 
   if(data.success) {
-    await router.push({name: 'Login'})
+    authStore.isLoggedIn = true
+    localStorage.setItem('accessToken', data.token)
+    await router.push({name: 'Profile'})
   }
   else {
     toast.error(data.error_message)

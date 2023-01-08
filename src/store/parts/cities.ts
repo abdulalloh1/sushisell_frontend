@@ -28,10 +28,10 @@ export const useCitiesStore = defineStore('cities', {
         },
 
         async changeActiveCity (id: number) {
-            const selectedCity: City = this.cities.find(city => city.id === +id)
+            const selectedCity: City = this.cities.find(city => city.external_id ? +city.external_id === +id : +city.id === +id)
             this.activeCity = { ...selectedCity }
 
-            localStorage.setItem('activeCity', this.activeCity.id)
+            localStorage.setItem('activeCity', this.activeCity.external_id ? this.activeCity.external_id : this.activeCity.id)
 
             const catalogStore = useMenuStore()
             await catalogStore.getMenu()

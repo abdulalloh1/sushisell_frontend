@@ -13,6 +13,7 @@ import {uuid} from "vue3-uuid";
 import AppHeader from "@/components/Layout/AppHeader/AppHeader.vue";
 import AppToast from "@/components/UI/AppToast/AppToast.vue";
 import Appfooter from "@/components/Layout/AppFooter/Appfooter.vue";
+import { useCartStore } from "@/store/parts/cart";
 
 // State
 const isPreloaderActive = ref(true)
@@ -21,13 +22,15 @@ const isPreloaderActive = ref(true)
 const citiesStore = useCitiesStore()
 const settingStore = useSettingStore()
 const menuStore = useMenuStore()
+const cartStore = useCartStore()
 
 onMounted(() => {
   if(!localStorage.getItem('deviceUUID')) localStorage.setItem('deviceUUID', uuid.v4())
   Promise.all([
     citiesStore.getCities(),
     settingStore.getSetting(),
-    menuStore.getMenu()
+    menuStore.getMenu(),
+    cartStore.getCart()
   ])
       .finally(() => {
         isPreloaderActive.value = false

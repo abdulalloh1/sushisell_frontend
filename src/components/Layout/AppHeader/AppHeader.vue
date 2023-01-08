@@ -99,7 +99,7 @@ onMounted(() => {
                 v-model="citiesStore.activeCity.id"
                 :key="index"
                 :value="city.id"
-                @change="changeCity(city.id)"
+                @change="changeCity(city.external_id ? city.external_id : city.id)"
             >
               <template #label>{{ city.name }}</template>
             </app-radio>

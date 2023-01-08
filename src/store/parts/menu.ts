@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import api from "@/api";
 import { useCitiesStore } from "@/store/parts/cities";
+import { useCartStore } from "@/store/parts/cart";
 
 export interface Product {
     name: String,
@@ -11,7 +12,8 @@ export const useMenuStore = defineStore('menu', {
         activeCategory: '',
         categories: [],
         products:<Product[]> [],
-        cityStore: useCitiesStore()
+        cityStore: useCitiesStore(),
+        cart: useCartStore()
     }),
     getters: {
         computedCategories(state) {
@@ -25,6 +27,25 @@ export const useMenuStore = defineStore('menu', {
                     return category
                 })
                 .filter(category => !this.cityStore.activeCity.external_id ? category : category.parent_id ? category : '')
+        },
+
+        computedCategoriesAndProducts () {
+            if(!this.cart.cart.products.length) return this.computedCategories
+
+            let newArray = []
+            this.cart.cart.products.map(cartItem => {
+                newArray = this.computedCategories.map(category => {
+                    category.products.find(product => {
+                        if(product.id === cartItem.id) {
+                            product.quantity = cartItem.quantity
+                            return product
+                        }
+                    })
+                    return category
+                })
+            })
+
+            return newArray
         }
     },
     actions: {

@@ -10,11 +10,15 @@ export class Core {
         this.url = url;
     }
 
-    getAll (params?: object) {
-        return this._axios.get(this.url, {params})
+    getAll (config?: object) {
+        return this._axios.get(this.url, config)
     }
 
-    getSingle (id: number, params?: object) {
-        return this._axios.get(this.url + '/' + id, {params})
+    getSingle (id: number, config?: object) {
+        return this._axios.get(this.url + '/' + id, config)
+    }
+
+    post (config?: object) {
+        return this._axios.post(this.url, config)
     }
 }

@@ -100,7 +100,7 @@ onUnmounted(() => {
       >
         <div class="chips">
           <app-chip
-              v-for="(category, index) in menuStore.computedCategories"
+              v-for="(category, index) in menuStore.computedCategoriesAndProducts"
               :key="index"
               :class="{'chip--active': activeCategory === category.id}"
               @click="selectCategory(category.id)"

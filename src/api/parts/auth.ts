@@ -9,7 +9,11 @@ class Auth extends Core {
     }
 
     loginApi (payload: Login) {
-        return this._axios.post(this.url + '/login', payload)
+        return this._axios.post(this.url + '/login', payload, {
+            headers: {
+                Authorization: localStorage.getItem('accessToken')
+            }
+        })
     }
 
     getAvailableRegisterTypesApi () {
@@ -17,11 +21,23 @@ class Auth extends Core {
     }
 
     registerApi (payload: Register) {
-        return this._axios.post(this.url + '/register', payload)
+        return this._axios.post(this.url + '/register', payload, {
+            headers: {
+                UUID: localStorage.getItem('deviceUUID')
+            }
+        })
     }
 
     registerCheckApi (payload: {phone: string, code: string}) {
-        return this._axios.post(this.url + '/registerCheck', payload)
+        return this._axios.post(this.url + '/registerCheck', payload, {
+            headers: {
+                UUID: localStorage.getItem('deviceUUID')
+            }
+        })
+    }
+
+    userInfoApi () {
+        
     }
 }
 
