@@ -25,13 +25,11 @@
     justify-content: center;
     cursor: pointer;
     text-decoration: none;
+    --current-color: #777;
 
     &--active {
       background-color: #eaeaea;
-
-      svg path {
-        fill: #009846;
-      }
+      --current-color: #009846;
 
       .app-footer__text {
         color: #009846;

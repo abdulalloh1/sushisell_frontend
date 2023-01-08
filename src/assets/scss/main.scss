@@ -278,7 +278,7 @@ body {
       }
     }
 
-    &:focus {
+    &--active {
       background: linear-gradient(180deg, #e15959, #e96f54);
       color: #fff;
 
@@ -525,7 +525,15 @@ body {
 }
 
 .cities-list-modal-dialog {
+  .modal {
+    &__window {
+      overflow: hidden;
+    }
+  }
+
   &__list {
+    height: calc(100vh - 56px);
+    overflow-y: scroll;
     padding: 16px 18px;
 
     .app-radio {
@@ -662,6 +670,12 @@ body {
 }
 
 .confirm-phone-modal-dialog {
+  .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
   .modal {
     &__body {
       height: 100%;

@@ -16,6 +16,9 @@ class Catalog extends Core {
             params: {
                 city_id: citiesStore.activeCity.external_id,
                 kitchen_comment: 1
+            },
+            headers: {
+                UUID: localStorage.getItem('deviceUUID')
             }
         })
     }

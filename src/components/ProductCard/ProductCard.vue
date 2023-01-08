@@ -53,7 +53,7 @@ function toggleWishesList () {
 }
 
 function makeOrder () {
-  if(props.roll.available_modifiers.length) return openModifiersModal()
+  if(props.roll.available_modifiers?.length) return openModifiersModal()
 }
 
 function addRemoveModifier (groupID, id) {

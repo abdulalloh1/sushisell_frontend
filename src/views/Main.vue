@@ -59,6 +59,10 @@ function activateChip () {
   })
 }
 
+function isCategoryKit (str: string) {
+  return str.replace(/[^a-zA-Z]+/g, '') === 'nabori'
+}
+
 onMounted(() => {
   window.addEventListener('scroll', activateChip)
 })
@@ -148,6 +152,7 @@ onUnmounted(() => {
               v-for="(product, productIndex) in category.products"
               :key="productIndex"
               :roll="product"
+              :class="{'product-card--active': isCategoryKit(category.url ?? category.slug)}"
           />
         </template>
         <h4 class="main__rolls__description">{{ category.description }}</h4>

@@ -9,7 +9,10 @@ import { vMaska } from 'maska';
 import useToast from "@/components/UI/AppToast/useToast";
 import api from "@/api";
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
+import ProgressLinear from "@/components/UI/ProgressLinear/ProgressLinear.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter()
 const { toast } = useToast()
 const inputRef = ref(null)
 const registerFields: Register = reactive({
@@ -20,7 +23,8 @@ const registerFields: Register = reactive({
 })
 const registerTypes = ref([])
 const confirmationCode = ref('')
-const isConfirmModalOpen = ref(true)
+const isConfirmModalOpen = ref(false)
+const isRegisterCheckPending = ref(false)
 
 const computedIsButtonDisabled = computed(() => {
   return !registerFields.phone ||
@@ -28,6 +32,17 @@ const computedIsButtonDisabled = computed(() => {
       !registerFields.password_repeat ||
       !registerFields.verify_type
 })
+
+function fieldsValidation () {
+  if(registerFields.password !== registerFields.password_repeat) {
+    toast.error('Пароли не совпадают')
+  }
+  if(registerFields.phone.length < 10) {
+    toast.error('Некорректный формат номера телефона')
+  }
+
+  else return true
+}
 
 async function getAvailableRegisterTypes () {
   const {data} = await api.auth.getAvailableRegisterTypesApi()
@@ -39,22 +54,30 @@ function selectRegisterType (value: string) {
 }
 
 async function submit () {
-  if(registerFields.password !== registerFields.password_repeat) {
-    return toast.error('Пароли не совпадают')
-  }
+  if(!fieldsValidation()) return
 
   const {data} = await api.auth.registerApi(registerFields)
 
   if(data.success) {
     isConfirmModalOpen.value = true
   }
+  else {
+    toast.error(data.error_message)
+  }
 }
 
 async function registerCheck () {
-  await api.auth.registerCheckApi({
+  const {data} = await api.auth.registerCheckApi({
     phone: registerFields.phone,
     code: confirmationCode.value
   })
+
+  if(data.success) {
+    await router.push({name: 'Login'})
+  }
+  else {
+    toast.error(data.error_message)
+  }
 }
 
 function enterCode () {
@@ -71,7 +94,10 @@ watch(confirmationCode, (newValue) => {
 </script>
 <template>
   <div class="auth">
-    <form class="auth__input-wrapper register">
+    <form
+        class="auth__input-wrapper register"
+        @submit.prevent
+    >
       <h3 class="auth__title">
         регистрация
       </h3>
@@ -91,10 +117,11 @@ watch(confirmationCode, (newValue) => {
           v-if="registerTypes.length > 1"
           class="auth__infos"
       >
-        <div
+        <button
             v-if="registerTypes.includes('telegram')"
-            class="auth__contact"
-            tabindex="0"
+            :class="['auth__contact', {
+              'auth__contact--active': registerFields.verify_type === 'telegram'
+            }]"
             @click="selectRegisterType('telegram')"
         >
           <svg
@@ -117,11 +144,12 @@ watch(confirmationCode, (newValue) => {
             />
           </svg>
           Telegram
-        </div>
-        <div
+        </button>
+        <button
             v-if="registerTypes.includes('call')"
-            class="auth__contact"
-            tabindex="0"
+            :class="['auth__contact', {
+              'auth__contact--active': registerFields.verify_type === 'call'
+            }]"
             @click="selectRegisterType('call')"
         >
           <svg
@@ -142,7 +170,7 @@ watch(confirmationCode, (newValue) => {
             />
           </svg>
           Звонок
-        </div>
+        </button>
       </div>
       <a
           href="#"
@@ -186,6 +214,7 @@ watch(confirmationCode, (newValue) => {
           </a>
         </template>
         <template #body>
+          <progress-linear v-if="isRegisterCheckPending"/>
           <h2 class="confirm-phone-modal-dialog__title">Введите Проверочный код из голосового сообщения</h2>
           <div class="confirm-phone-modal-dialog__input-box">
             <input

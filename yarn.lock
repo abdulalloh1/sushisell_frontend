@@ -2627,6 +2627,11 @@
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.6.tgz#250a7b16c3b91f672a24552ec64678eeb1d3a08d"
   integrity sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==
 
+"@types/uuid@^8.0.0":
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
+  integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
+
 "@types/webpack-env@^1.16.0":
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.18.0.tgz#ed6ecaa8e5ed5dfe8b2b3d00181702c9925f13fb"
@@ -10485,6 +10490,11 @@ uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
+uuid@^8.1.0:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+
 v8-compile-cache@^2.0.3:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.3.0.tgz#2de19618c66dc247dcfb6f99338035d8245a2cee"
@@ -10632,6 +10642,14 @@ vue-tsc@^1.0.11:
   dependencies:
     "@volar/vue-language-core" "1.0.18"
     "@volar/vue-typescript" "1.0.18"
+
+vue3-uuid@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue3-uuid/-/vue3-uuid-1.0.0.tgz#b76b04e81a5c99ad1153585ce84e946ea8562dd2"
+  integrity sha512-TyRCP6KgHHRjwWVI4Eyhd5+eZi9bspkohuXJGEQArtc5VMYKX938ridCff3NpqxPjdawqK+6AZ7rKh9AhT9Jtw==
+  dependencies:
+    "@types/uuid" "^8.0.0"
+    uuid "^8.1.0"
 
 vue@^3.2.45:
   version "3.2.45"

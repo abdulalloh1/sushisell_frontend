@@ -60,7 +60,7 @@ onMounted(() => {
 <template>
   <transition name="modal">
     <div
-        v-show="modelValue"
+        v-if="modelValue"
         :class="['modal', `modal--size-${size}`]"
     >
       <div

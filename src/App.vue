@@ -7,6 +7,7 @@ import { onMounted, ref } from "vue";
 import { useCitiesStore } from "@/store/parts/cities";
 import { useSettingStore } from "@/store/parts/setting";
 import { useMenuStore } from "@/store/parts/menu";
+import {uuid} from "vue3-uuid";
 
 // Components
 import AppHeader from "@/components/Layout/AppHeader/AppHeader.vue";
@@ -22,6 +23,7 @@ const settingStore = useSettingStore()
 const menuStore = useMenuStore()
 
 onMounted(() => {
+  if(!localStorage.getItem('deviceUUID')) localStorage.setItem('deviceUUID', uuid.v4())
   Promise.all([
     citiesStore.getCities(),
     settingStore.getSetting(),
