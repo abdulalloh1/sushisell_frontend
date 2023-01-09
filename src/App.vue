@@ -14,6 +14,7 @@ import AppHeader from "@/components/Layout/AppHeader/AppHeader.vue";
 import AppToast from "@/components/UI/AppToast/AppToast.vue";
 import Appfooter from "@/components/Layout/AppFooter/Appfooter.vue";
 import { useCartStore } from "@/store/parts/cart";
+import { useAuthStore } from "@/store/parts/auth";
 
 // State
 const isPreloaderActive = ref(true)
@@ -23,14 +24,17 @@ const citiesStore = useCitiesStore()
 const settingStore = useSettingStore()
 const menuStore = useMenuStore()
 const cartStore = useCartStore()
+const authStore = useAuthStore()
 
 onMounted(() => {
+  if(localStorage.getItem('accessToken')) authStore.isLoggedIn = true
   if(!localStorage.getItem('deviceUUID')) localStorage.setItem('deviceUUID', uuid.v4())
   Promise.all([
     citiesStore.getCities(),
     settingStore.getSetting(),
     menuStore.getMenu(),
-    cartStore.getCart()
+    cartStore.getCart(),
+    authStore.isLoggedIn ? menuStore.getFavoriteProducts() : ''
   ])
       .finally(() => {
         isPreloaderActive.value = false

@@ -13,7 +13,8 @@ export const useMenuStore = defineStore('menu', {
         categories: [],
         products:<Product[]> [],
         cityStore: useCitiesStore(),
-        cart: useCartStore()
+        cart: useCartStore(),
+        favoriteProducts: []
     }),
     getters: {
         computedCategories(state) {
@@ -61,6 +62,19 @@ export const useMenuStore = defineStore('menu', {
 
             const { data } = await api.menu.getSingle(this.cityStore.activeCity.id)
             this.categories = data.data
+        },
+
+        async getFavoriteProducts () {
+            const {data} = await api.auth.favoriteProductsApi()
+            if(data.success) this.favoriteProducts = data.products
+        },
+
+        async addRemoveFavoriteProduct (id: number) {
+            const {data} = await api.auth.addRemoveFavoriteProductApi({
+                product: id,
+                mark: !this.favoriteProducts.includes(String(id))
+            })
+            if(data.success) this.favoriteProducts = data.products
         }
     }
 })

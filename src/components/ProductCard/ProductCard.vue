@@ -7,6 +7,8 @@ import AppCheckBox from '../UI/AppCheckBox/AppCheckBox.vue';
 import SlideInOutAnimation from "@/components/UI/SlideInOutAnimation/SlideInOutAnimation.vue";
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
 import { useCartStore } from "@/store/parts/cart";
+import { useAuthStore } from "@/store/parts/auth";
+import { useMenuStore } from "@/store/parts/menu";
 
 const props = defineProps({
   roll: {
@@ -26,6 +28,8 @@ const selectedModifier = reactive({
   IDs: []
 })
 const cartStore = useCartStore()
+const authStore = useAuthStore()
+const menuStore = useMenuStore()
 
 const computedModifierGroupsIDs = computed(() => {
   if (!props.roll.modifier_groups) return
@@ -83,7 +87,6 @@ function addRemoveProduct (action: string) {
   else if (action === 'minus') props.roll.quantity -= 1
 
   cartStore.addRemoveProduct(props.roll.id, props.roll.quantity)
-
 }
 
 </script>
@@ -104,6 +107,15 @@ function addRemoveProduct (action: string) {
       >
     </div>
     <div class="product-card__items">
+      <button
+          v-if="authStore.isLoggedIn"
+          :class="['product-card__favorite-btn', {
+            'product-card__favorite-btn--active': menuStore.favoriteProducts.includes(String(roll.id))
+          }]"
+          @click="menuStore.addRemoveFavoriteProduct(roll.id)"
+      >
+        <svg data-src="/img/icons/heart.svg"/>
+      </button>
       <div class="product-card__text">
         <p class="product-card__name">{{ roll.name }}</p>
         <div

@@ -37,7 +37,15 @@ class Auth extends Core {
     }
 
     userInfoApi () {
-        
+
+    }
+
+    favoriteProductsApi () {
+        return this._axios.get(this.url + '/favoriteProduct')
+    }
+
+    addRemoveFavoriteProductApi (payload: object) {
+        return this._axios.post(this.url + '/favoriteProduct', payload)
     }
 }
 
