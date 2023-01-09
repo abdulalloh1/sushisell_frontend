@@ -16,12 +16,16 @@ export const useAuthStore = defineStore('auth', {
         async login(payload: Login) {
             const { data } = await api.auth.loginApi(payload)
             if(data.success) {
-                if(this.citiesStore.activeCity.external_id) localStorage.setItem('externalAccessToken', data.token)
-                if(!this.citiesStore.activeCity.external_id) localStorage.setItem('accessToken', data.token)
+              const activeCityExternalId = this.citiesStore.activeCity.external_id;
+                if(activeCityExternalId) {
+                  localStorage.setItem('externalAccessToken', data.token)
+                }
+                if(!activeCityExternalId) {
+                  localStorage.setItem('accessToken', data.token)
+                }
 
                 this.isLoggedIn = true
-                await this.menu.getFavoriteProducts()
-                return Promise.resolve()
+                /*await this.menu.getFavoriteProducts()*/
             }
 
             toast.error(data.error_message)

@@ -41,14 +41,20 @@ async function login () {
     const {data} = await api.auth.authExternal(loginCredentials)
     if(data?.data?.errors) {
       Object.keys(data.data.errors).forEach(key => {
-        if(key === 'code') toast.error(data.data.errors.code[0])
-        else toast.error(key)
+        let errorMessage;
+        if(key === 'code') {
+          errorMessage = data.data.errors.code[0];
+        } else {
+          errorMessage = key;
+        }
+        toast.error(errorMessage);
       })
     }
-  }
-  else {
+  } else {
     await authStore.login(loginCredentials)
-        .then(() => router.push({name: 'Profile'}))
+        .then(() => {
+          router.push({name: 'Profile'})
+        })
   }
 
   isRequestPending.value = false

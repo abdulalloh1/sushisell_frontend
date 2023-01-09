@@ -18,8 +18,7 @@ export const useMenuStore = defineStore('menu', {
     }),
     getters: {
         computedCategories(state) {
-            return state.categories
-                .map(category => {
+            return state.categories.map(category => {
                     if (this.cityStore.activeCity.external_id) {
                         category.name = category.title
                         category.products = state.products.filter(product => product.category_id === category.id)

@@ -9,6 +9,7 @@
   line-height: 20px;
   display: flex;
   color: #666;
+  flex-grow: 1;
 }
 
 [type="radio"] + label:before {

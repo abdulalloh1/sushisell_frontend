@@ -32,7 +32,7 @@ function toggleFilterVisibility () {
 function selectCategory (id: number) {
   isScrolling.value = true
   const element = document.getElementById(`categoryID=${id}`)
-  window.scrollTo({top: element.offsetTop - 120})
+  window.scrollTo({top: element.offsetTop - 110})
 }
 
 function activateChip () {

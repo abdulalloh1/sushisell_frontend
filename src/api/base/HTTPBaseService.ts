@@ -29,7 +29,7 @@ export function setupInterceptorsTo(axiosInstance: AxiosInstance): AxiosInstance
 }
 
 const instance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL + 'v2'
+    baseURL: import.meta.env.VITE_API_URL + '/v2'
 })
 
 const instance2 = axios.create({
