@@ -1,27 +1,34 @@
 import { Core } from "@/api/base/Core";
 import type { Login, Register } from "@/types/auth";
-import { axiosInstanceV2 } from "@/api/base/HTTPBaseService";
+import { axiosInstanceV1, axiosInstanceV2 } from "@/api/base/HTTPBaseService";
 
 class Auth extends Core {
     constructor(url: string) {
         super(url);
-        this._axios = axiosInstanceV2
     }
 
     loginApi (payload: Login) {
-        return this._axios.post(this.url + '/login', payload, {
+        return this._axios2.post(this.url + '/login', payload, {
             headers: {
-                Authorization: localStorage.getItem('accessToken')
+                UUID: localStorage.getItem('deviceUUID')
             }
         })
     }
 
+    getCaptchaApi () {
+        return this._axios.get(`auth/captcha`)
+    }
+
+    authExternal (payload: object) {
+        return this._axios.post('/auth-external', payload)
+    }
+
     getAvailableRegisterTypesApi () {
-        return this._axios.get(this.url + '/getAvailableRegisterTypes/')
+        return this._axios2.get(this.url + '/getAvailableRegisterTypes/')
     }
 
     registerApi (payload: Register) {
-        return this._axios.post(this.url + '/register', payload, {
+        return this._axios2.post(this.url + '/register', payload, {
             headers: {
                 UUID: localStorage.getItem('deviceUUID')
             }
@@ -29,7 +36,7 @@ class Auth extends Core {
     }
 
     registerCheckApi (payload: {phone: string, code: string}) {
-        return this._axios.post(this.url + '/registerCheck', payload, {
+        return this._axios2.post(this.url + '/registerCheck', payload, {
             headers: {
                 UUID: localStorage.getItem('deviceUUID')
             }
@@ -41,11 +48,11 @@ class Auth extends Core {
     }
 
     favoriteProductsApi () {
-        return this._axios.get(this.url + '/favoriteProduct')
+        return this._axios2.get(this.url + '/favoriteProduct')
     }
 
     addRemoveFavoriteProductApi (payload: object) {
-        return this._axios.post(this.url + '/favoriteProduct', payload)
+        return this._axios2.post(this.url + '/favoriteProduct', payload)
     }
 }
 

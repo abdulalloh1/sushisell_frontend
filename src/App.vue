@@ -27,7 +27,8 @@ const cartStore = useCartStore()
 const authStore = useAuthStore()
 
 onMounted(() => {
-  if(localStorage.getItem('accessToken')) authStore.isLoggedIn = true
+  if(localStorage.getItem('accessToken') && !citiesStore.activeCity.external_id) authStore.isLoggedIn = true
+  if(localStorage.getItem('externalAccessToken') && citiesStore.activeCity.external_id) authStore.isLoggedIn = true
   if(!localStorage.getItem('deviceUUID')) localStorage.setItem('deviceUUID', uuid.v4())
   Promise.all([
     citiesStore.getCities(),
