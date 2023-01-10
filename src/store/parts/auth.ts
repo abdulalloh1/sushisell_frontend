@@ -25,6 +25,7 @@ export const useAuthStore = defineStore('auth', {
                 }
 
                 this.isLoggedIn = true
+                await Promise.resolve()
                 /*await this.menu.getFavoriteProducts()*/
             }
 

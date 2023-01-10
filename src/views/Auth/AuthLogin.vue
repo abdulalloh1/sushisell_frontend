@@ -13,11 +13,13 @@ import ProgressLinear from "@/components/UI/ProgressLinear/ProgressLinear.vue";
 import { useCitiesStore } from "@/store/parts/cities";
 import api from "@/api";
 import useToast from "@/components/UI/AppToast/useToast";
+import { useMenuStore } from "@/store/parts/menu";
 
 const router = useRouter()
 const { toast } = useToast()
 const authStore = useAuthStore()
 const citiesStore = useCitiesStore()
+const menuStore = useMenuStore()
 const loginCredentials: Login = reactive({
   phone: '',
   password: ''
@@ -54,6 +56,7 @@ async function login () {
     await authStore.login(loginCredentials)
         .then(() => {
           router.push({name: 'Profile'})
+          menuStore.getFavoriteProducts()
         })
   }
 

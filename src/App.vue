@@ -27,18 +27,19 @@ const cartStore = useCartStore()
 const authStore = useAuthStore()
 
 onMounted(() => {
-  if(localStorage.getItem('accessToken') && !citiesStore.activeCity.external_id) authStore.isLoggedIn = true
-  if(localStorage.getItem('externalAccessToken') && citiesStore.activeCity.external_id) authStore.isLoggedIn = true
   if(!localStorage.getItem('deviceUUID')) localStorage.setItem('deviceUUID', uuid.v4())
   Promise.all([
     citiesStore.getCities(),
     settingStore.getSetting(),
     menuStore.getMenu(),
     cartStore.getCart(),
-    authStore.isLoggedIn ? menuStore.getFavoriteProducts() : ''
   ])
       .finally(() => {
         isPreloaderActive.value = false
+        if(localStorage.getItem('accessToken') && !citiesStore.activeCity.external_id) authStore.isLoggedIn = true
+        if(localStorage.getItem('externalAccessToken') && citiesStore.activeCity.external_id) authStore.isLoggedIn = true
+
+        authStore.isLoggedIn ? menuStore.getFavoriteProducts() : ''
       })
 })
 </script>

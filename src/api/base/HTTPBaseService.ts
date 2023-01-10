@@ -1,10 +1,15 @@
 import axios from "axios";
+import { useCitiesStore } from "@/store/parts/cities";
 
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
+    const citiesStore = useCitiesStore()
+    const activeCityExternalId = citiesStore.activeCity.external_id;
     const accessToken = localStorage.getItem('accessToken')
+    const externalAccessToken = localStorage.getItem('externalAccessToken')
     config.headers = config.headers ?? {}
 
-    if (accessToken) config.headers.Authorization = accessToken
+    if (accessToken && !activeCityExternalId) config.headers.Authorization = accessToken
+    if (externalAccessToken && activeCityExternalId) config.headers.Authorization = externalAccessToken
     config.headers.Accept = 'application/json'
 
     return config
