@@ -1,6 +1,7 @@
 export interface Login {
-    password: string,
-    phone: string
+    password?: string,
+    phone: string,
+    code?: string
 }
 
 export interface Register {

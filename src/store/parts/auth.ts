@@ -30,6 +30,12 @@ export const useAuthStore = defineStore('auth', {
             }
 
             toast.error(data.error_message)
+        },
+
+        checkTokenFromLocalstorage () {
+            const accessWithExternalId = localStorage.getItem('externalAccessToken') && this.citiesStore.activeCity.external_id
+            const accessWithoutExternalId = localStorage.getItem('accessToken') && !this.citiesStore.activeCity.external_id
+            accessWithExternalId || accessWithoutExternalId ? this.isLoggedIn = true : this.isLoggedIn = false
         }
     }
 })

@@ -11,10 +11,16 @@ import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
 import AppChip from "@/components/UI/Chips/AppChip.vue";
 import AppRadio from "@/components/UI/AppRadio/AppRadio.vue";
 import ProgressLinear from "@/components/UI/ProgressLinear/ProgressLinear.vue";
+import { useAuthStore } from "@/store/parts/auth";
+import { useRoute, useRouter } from "vue-router";
+
+const router = useRouter()
+const route = useRoute()
 
 // Store
 const citiesStore = useCitiesStore()
 const settingStore = useSettingStore()
+const authStore = useAuthStore()
 
 // State
 const isCitiesListModalOpen = ref(false)
@@ -33,6 +39,13 @@ function openMessageModal() {
 async function changeCity(id: number) {
   isChangeCityLoading.value = true
   await citiesStore.changeActiveCity(id)
+  authStore.checkTokenFromLocalstorage()
+
+  if(!authStore.isLoggedIn) await router.push({name: 'Login'})
+  else if(route.name === 'Login') {
+    await router.push({name: 'Profile'})
+
+  }
   isChangeCityLoading.value = false
   isCitiesListModalOpen.value = false
 }

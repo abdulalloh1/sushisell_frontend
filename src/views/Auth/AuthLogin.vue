@@ -3,7 +3,7 @@
     setup
 >
 import type { Login } from "@/types/auth";
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useAuthStore } from "@/store/parts/auth";
 
 import AppInput from '@/components/UI/AppInput/AppInput.vue';
@@ -14,6 +14,7 @@ import { useCitiesStore } from "@/store/parts/cities";
 import api from "@/api";
 import useToast from "@/components/UI/AppToast/useToast";
 import { useMenuStore } from "@/store/parts/menu";
+import AuthPhoneConfirmationModal from "@/components/AuthPhoneConfirmationModal/AuthPhoneConfirmationModal.vue";
 
 const router = useRouter()
 const { toast } = useToast()
@@ -29,6 +30,7 @@ const captchaValue = ref('')
 const hasExternalID = ref(!!citiesStore.activeCity.external_id)
 const isCaptchaLoading = ref(false)
 const isRequestPending = ref(false)
+const isConfirmModalOpen = ref(false)
 
 const computedSubmitBtnDisabled = computed(() => {
   return !loginCredentials.phone.trim() || hasExternalID.value ? !loginCredentials.password.trim() : isCaptchaLoading.value
@@ -39,7 +41,7 @@ async function login () {
   if(!hasExternalID.value) {
     delete loginCredentials.password
     loginCredentials.code = captchaValue.value
-
+    loginCredentials.phone = '7' + loginCredentials.phone
     const {data} = await api.auth.authExternal(loginCredentials)
     if(data?.data?.errors) {
       Object.keys(data.data.errors).forEach(key => {
@@ -50,7 +52,11 @@ async function login () {
           errorMessage = key;
         }
         toast.error(errorMessage);
+        getCaptcha()
       })
+    }
+    else {
+      isConfirmModalOpen.value = true
     }
   } else {
     await authStore.login(loginCredentials)
@@ -63,6 +69,26 @@ async function login () {
   isRequestPending.value = false
 }
 
+async function confirmPhoneNumber (code: string) {
+  loginCredentials.code = code
+  loginCredentials.guid = localStorage.getItem('deviceUUID')
+  loginCredentials.os_type = "Web"
+  const {data} = await api.auth.authExternalConfirm(loginCredentials)
+
+  if(data?.data?.errors) {
+    Object.keys(data.data.errors).forEach(key => {
+      let errorMessage;
+      if(key === 'code') {
+        errorMessage = data.data.errors.code[0];
+      } else {
+        errorMessage = key;
+      }
+      toast.error(errorMessage);
+      isConfirmModalOpen.value = false
+    })
+  }
+}
+
 async function getCaptcha () {
   isCaptchaLoading.value = true
   const {data} = await api.auth.getCaptchaApi()
@@ -73,9 +99,16 @@ async function getCaptcha () {
   isCaptchaLoading.value = false
 }
 
+function resendCaptcha () {
+  isConfirmModalOpen.value = false
+  getCaptcha()
+}
+
 onMounted(() => {
+  if(authStore.isLoggedIn) router.push({name: 'Profile'})
   if(!hasExternalID.value) getCaptcha()
 })
+
 
 </script>
 
@@ -149,5 +182,18 @@ onMounted(() => {
       </router-link>
       <button class="auth__link">Забыли пароль?</button>
     </div>
+
+    <auth-phone-confirmation-modal
+        v-model="isConfirmModalOpen"
+        @submit="confirmPhoneNumber"
+    >
+      <p class="confirm-phone-modal-dialog__subtitle">Не получается войти?</p>
+      <button
+        class="confirm-phone-modal-dialog__btn"
+        @click="resendCaptcha"
+      >
+        Отправить СМС код
+      </button>
+    </auth-phone-confirmation-modal>
   </div>
 </template>

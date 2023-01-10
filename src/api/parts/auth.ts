@@ -23,6 +23,10 @@ class Auth extends Core {
         return this._axios.post('/auth-external', payload)
     }
 
+    authExternalConfirm (payload: object) {
+        return this._axios.post('/auth-external/confirm', payload)
+    }
+
     getAvailableRegisterTypesApi () {
         return this._axios2.get(this.url + '/getAvailableRegisterTypes/')
     }
@@ -41,10 +45,6 @@ class Auth extends Core {
                 UUID: localStorage.getItem('deviceUUID')
             }
         })
-    }
-
-    userInfoApi () {
-
     }
 
     favoriteProductsApi () {

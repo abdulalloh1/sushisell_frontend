@@ -36,8 +36,7 @@ onMounted(() => {
   ])
       .finally(() => {
         isPreloaderActive.value = false
-        if(localStorage.getItem('accessToken') && !citiesStore.activeCity.external_id) authStore.isLoggedIn = true
-        if(localStorage.getItem('externalAccessToken') && citiesStore.activeCity.external_id) authStore.isLoggedIn = true
+        authStore.checkTokenFromLocalstorage()
 
         authStore.isLoggedIn ? menuStore.getFavoriteProducts() : ''
       })

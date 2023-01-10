@@ -4,19 +4,16 @@ import AppInput from "@/components/UI/AppInput/AppInput.vue";
 import AppInputPhone from "@/components/UI/AppInputPhone/AppInputPhone.vue";
 
 import type { Register } from "@/types/auth";
-import { computed, onMounted, reactive, ref, watch } from "vue";
-import { vMaska } from 'maska';
+import { computed, onMounted, reactive, ref } from "vue";
 import useToast from "@/components/UI/AppToast/useToast";
 import api from "@/api";
-import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
-import ProgressLinear from "@/components/UI/ProgressLinear/ProgressLinear.vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/parts/auth";
+import AuthPhoneConfirmationModal from "@/components/AuthPhoneConfirmationModal/AuthPhoneConfirmationModal.vue";
 
 const { toast } = useToast()
 const router = useRouter()
 const authStore = useAuthStore()
-const inputRef = ref(null)
 const registerFields: Register = reactive({
   phone: '',
   password: '',
@@ -24,7 +21,6 @@ const registerFields: Register = reactive({
   verify_type: ''
 })
 const registerTypes = ref([])
-const confirmationCode = ref('')
 const isConfirmModalOpen = ref(false)
 const isRegisterCheckPending = ref(false)
 
@@ -68,10 +64,10 @@ async function submit () {
   }
 }
 
-async function registerCheck () {
+async function registerCheck (code: string) {
   const {data} = await api.auth.registerCheckApi({
     phone: registerFields.phone,
-    code: confirmationCode.value
+    code
   })
 
   if(data.success) {
@@ -84,17 +80,10 @@ async function registerCheck () {
   }
 }
 
-function enterCode () {
-  inputRef.value.focus()
-}
-
 onMounted(() => {
   getAvailableRegisterTypes()
 })
 
-watch(confirmationCode, (newValue) => {
-  if(newValue.length === 4) registerCheck()
-})
 </script>
 <template>
   <div class="auth">
@@ -109,10 +98,12 @@ watch(confirmationCode, (newValue) => {
         <app-input-phone v-model="registerFields.phone"/>
         <app-input
             v-model="registerFields.password"
+            type="password"
             placeholder="Пароль"
         />
         <app-input
             v-model="registerFields.password_repeat"
+            type="password"
             placeholder="Повторить Пароль"
         />
       </div>
@@ -200,49 +191,11 @@ watch(confirmationCode, (newValue) => {
       </router-link>
     </div>
 
-    <teleport to="body">
-      <modal-dialog
-          v-model="isConfirmModalOpen"
-          back-icon
-          size="full"
-          class="confirm-phone-modal-dialog"
-          :close-icon="false"
-      >
-        <template #header>
-          <h2 class="modal__title">Авторизация</h2>
-          <a
-              href="tel:+78006002665"
-              class="modal__header__phone"
-          >
-            <svg data-src="/img/icons/phone.svg"/>
-          </a>
-        </template>
-        <template #body>
-          <progress-linear v-if="isRegisterCheckPending"/>
-          <h2 class="confirm-phone-modal-dialog__title">Введите Проверочный код из голосового сообщения</h2>
-          <div class="confirm-phone-modal-dialog__input-box">
-            <input
-                ref="inputRef"
-                v-model="confirmationCode"
-                type="text"
-                class="confirm-phone-modal-dialog__input-box__input"
-                inputmode="numeric"
-                v-maska
-                data-maska="####"
-            >
-            <div
-                v-for="(num, index) in 4"
-                class="confirm-phone-modal-dialog__input-box__item"
-                @click="enterCode"
-            >
-              <transition name="bounce">
-                <p v-if="confirmationCode[index]">{{ confirmationCode[index] }}</p>
-              </transition>
-              <span />
-            </div>
-          </div>
-        </template>
-      </modal-dialog>
-    </teleport>
+    <auth-phone-confirmation-modal
+        v-model="isConfirmModalOpen"
+        title="Введите Проверочный код из голосового сообщения"
+        :loading="isRegisterCheckPending"
+        @submit="registerCheck"
+    />
   </div>
 </template>
