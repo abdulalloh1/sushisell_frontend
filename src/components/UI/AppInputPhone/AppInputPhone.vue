@@ -2,7 +2,7 @@
     lang="ts"
     setup
 >
-import { computed, defineEmits, defineProps, ref, watch } from 'vue';
+import { defineProps, ref, watch } from 'vue';
 import AppInput from '@/components/UI/AppInput/AppInput.vue';
 
 const props = defineProps({

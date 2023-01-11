@@ -2,7 +2,7 @@
     setup
     lang="ts"
 >
-import { computed, defineEmits, defineProps } from "vue";
+import { computed, defineProps } from "vue";
 import { generatorRandomID } from "@/utils/helper";
 
 const props = defineProps({

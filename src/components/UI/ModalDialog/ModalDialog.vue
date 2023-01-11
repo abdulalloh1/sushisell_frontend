@@ -2,7 +2,7 @@
     lang="ts"
     setup
 >
-import { computed, defineEmits, defineProps, onMounted, useSlots, watch } from 'vue';
+import { computed, defineProps, onMounted, useSlots, watch } from 'vue';
 import { getScrollBarWidth } from '@/utils/helper';
 
 const props = defineProps({
