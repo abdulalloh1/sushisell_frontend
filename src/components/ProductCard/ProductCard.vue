@@ -2,14 +2,14 @@
     lang="ts"
     setup
 >
-import { computed, reactive, ref } from 'vue';
+import { ref } from 'vue';
 import AppCheckBox from '../UI/AppCheckBox/AppCheckBox.vue';
 import SlideInOutAnimation from "@/components/UI/SlideInOutAnimation/SlideInOutAnimation.vue";
 import { useCartStore } from "@/store/parts/cart";
 import { useAuthStore } from "@/store/parts/auth";
 import { useMenuStore } from "@/store/parts/menu";
-import ModifiersModal from "@/components/ModifiersModal/ModifiersModal.vue";
 import AppImage from "@/components/UI/AppImage.vue";
+import { useModifiersModal } from "@/composables/modifiersModal";
 
 const props = defineProps({
   roll: {
@@ -18,13 +18,11 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['add-to-cart'])
-
 const isActive = ref(false)
 const isWishesListOpen = ref(false)
 const selectedWishes = ref([])
-const isModifiersModalOpen = ref(false)
 
+const modifiersModalComposable = useModifiersModal()
 const cartStore = useCartStore()
 const authStore = useAuthStore()
 const menuStore = useMenuStore()
@@ -40,7 +38,8 @@ function makeOrder () {
 }
 
 function openModifiersModal () {
-  isModifiersModalOpen.value = true
+  modifiersModalComposable.roll.value = props.roll
+  modifiersModalComposable.isModifiersModalOpen.value = true
 }
 
 function addRemoveProduct (action: string) {
@@ -65,11 +64,6 @@ function addRemoveProduct (action: string) {
     }
     cartStore.addKitProducts(modifiedProduct)
   }
-}
-
-async function addProductWithModifiersToCart(kit) {
-  await cartStore.addKitProducts(kit)
-  isModifiersModalOpen.value = false
 }
 
 </script>
@@ -150,13 +144,6 @@ async function addProductWithModifiersToCart(kit) {
         </div>
       </div>
     </div>
-    <teleport to="body">
-      <modifiers-modal
-          v-model="isModifiersModalOpen"
-          :roll="roll"
-          @submit="addProductWithModifiersToCart"
-      />
-    </teleport>
   </div>
 </template>
 

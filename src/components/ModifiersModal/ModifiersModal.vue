@@ -2,6 +2,7 @@
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
 import { computed, reactive, ref } from "vue";
 import { useCitiesStore } from "@/store/parts/cities";
+import { useCartStore } from "@/store/parts/cart";
 
 const props = defineProps({
   modelValue: Boolean,
@@ -13,7 +14,10 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'submit'])
 
-const modifierGroups = ref(props.roll.modifier_groups)
+const cartStore = useCartStore()
+const modifierGroups = computed(() => {
+  return props.roll.modifier_groups
+})
 
 const computedModelValue = computed({
   get() {
@@ -38,7 +42,7 @@ const computedModifierGroupsIDs = computed(() => {
 })
 
 const computedModifiers = computed(() => {
-  if (!computedModifierGroupsIDs.value!.length) return
+  if (!computedModifierGroupsIDs.value?.length) return [];
 
   return modifierGroups.value
       .sort(item => item.sort_order)
@@ -85,7 +89,7 @@ function checkToggleBtnToDisabled(group, productId) {
   );
 }
 
-function submit () {
+async function submit () {
   const modifiers = computedModifiers.value.map(group => {
     return {
       group_id: group.id,
@@ -102,7 +106,8 @@ function submit () {
     modifiers,
     queueKey: `${props.roll.id}_${modifiersIds.join('_')}`
   }
-  emit('submit', modifiedSelectedProducts)
+  await cartStore.addKitProducts(modifiedSelectedProducts)
+      .finally(() => computedModelValue.value = false)
 }
 </script>
 
@@ -126,7 +131,7 @@ function submit () {
     <template #body>
       <div class="product-modifiers-modal-dialog__selected">
         <h4 class="product-modifiers-modal-dialog__selected__title">Выбрано</h4>
-        <div class="product-modifiers-modal-dialog__selected__amount">{{ computedSelectedProductsLength }}/{{ computedModifierGroupsIDs.length }}</div>
+        <div class="product-modifiers-modal-dialog__selected__amount">{{ computedSelectedProductsLength }}/{{ computedModifierGroupsIDs?.length }}</div>
       </div>
       <div
           v-for="(group, groupIndex) in computedModifiers"

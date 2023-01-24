@@ -15,6 +15,8 @@ import AppToast from "@/components/UI/AppToast/AppToast.vue";
 import Appfooter from "@/components/Layout/AppFooter/Appfooter.vue";
 import { useCartStore } from "@/store/parts/cart";
 import { useAuthStore } from "@/store/parts/auth";
+import ModifiersModal from "@/components/ModifiersModal/ModifiersModal.vue";
+import { useModifiersModal } from "@/composables/modifiersModal";
 
 // State
 const isPreloaderActive = ref(true)
@@ -25,6 +27,7 @@ const settingStore = useSettingStore()
 const menuStore = useMenuStore()
 const cartStore = useCartStore()
 const authStore = useAuthStore()
+const { isModifiersModalOpen, roll } = useModifiersModal()
 
 onMounted(() => {
   if(!localStorage.getItem('deviceUUID')) localStorage.setItem('deviceUUID', uuid.v4())
@@ -50,6 +53,10 @@ onMounted(() => {
       <appfooter />
 
       <app-toast />
+      <modifiers-modal
+          v-model="isModifiersModalOpen"
+          :roll="roll"
+      />
     </template>
 
 </template>
