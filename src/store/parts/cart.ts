@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import api from "@/api";
+import useToast from "@/components/UI/AppToast/useToast";
 
 export const useCartStore = defineStore('cart', {
     state: () => ({
@@ -30,6 +31,18 @@ export const useCartStore = defineStore('cart', {
             if(data.success) {
                 this.cart = data.cart
             }
+        },
+
+        async addKitProducts (payload) {
+            const {toast} = useToast()
+            const {data} = await api.cart.post(payload)
+
+            if(data.success) {
+                this.cart = data.cart
+                return toast.success('Добавлено успешно')
+            }
+
+            return toast.error(data.error_message)
         }
     }
 })

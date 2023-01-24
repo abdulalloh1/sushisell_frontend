@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { ref } from "vue";
+import { useCartStore } from "@/store/parts/cart";
 
+const cartStore = useCartStore()
 const routes = ref([
   {
     routeName: 'Main',
@@ -42,6 +44,12 @@ const routes = ref([
           class="app-footer__btn"
           active-class="app-footer__btn--active"
       >
+        <div
+            v-if="route.routeName === 'Cart' && cartStore.cart.products.length"
+            class="app-footer__btn__badge"
+        >
+          {{ cartStore.cart.products.length }}
+        </div>
         <div class="app-footer__home">
           <svg :data-src="route.icon"/>
         </div>

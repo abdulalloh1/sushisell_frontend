@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="page">
     Profile page
-
+    <br>
     <button
         @click="logOut"
     >

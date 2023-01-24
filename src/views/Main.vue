@@ -99,14 +99,16 @@ onUnmounted(() => {
           class="main__chips"
       >
         <div class="chips">
-          <app-chip
-              v-for="(category, index) in menuStore.computedCategoriesAndProducts"
-              :key="index"
-              :class="{'chip--active': activeCategory === category.id}"
-              @click="selectCategory(category.id)"
-          >
-            {{ category.name }}
-          </app-chip>
+          <div class="chips__wrapper">
+            <app-chip
+                v-for="(category, index) in menuStore.computedCategoriesAndProducts"
+                :key="index"
+                :class="{'chip--active': activeCategory === category.id}"
+                @click="selectCategory(category.id)"
+            >
+              {{ category.name }}
+            </app-chip>
+          </div>
         </div>
       </div>
       <div :class="['main-control__items', { 'show': isFilterOpen }]">

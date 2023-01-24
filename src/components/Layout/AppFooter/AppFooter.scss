@@ -6,13 +6,15 @@
   left: 0;
   box-shadow: 0 0 12px rgb(81 151 181 / 12%);
   background-color: #fff;
-  margin: 0 auto;
 
   &-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-around;
     height: 58px;
+    max-width: 767px;
+    margin: 0 auto;
+    padding: 0 15px;
   }
 
   &__btn {
@@ -26,6 +28,7 @@
     cursor: pointer;
     text-decoration: none;
     --current-color: #777;
+    position: relative;
 
     &--active {
       background-color: #eaeaea;
@@ -34,6 +37,23 @@
       .app-footer__text {
         color: #009846;
       }
+    }
+
+    &__badge {
+      position: absolute;
+      right: 18px;
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      color: #fff;
+      font-weight: 500;
+      font-size: 10px;
+      line-height: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg,#e15959,#e96f54);
     }
   }
 

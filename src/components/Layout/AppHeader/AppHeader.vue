@@ -41,11 +41,8 @@ async function changeCity(id: number) {
   await citiesStore.changeActiveCity(id)
   authStore.checkTokenFromLocalstorage()
 
-  if(!authStore.isLoggedIn) await router.push({name: 'Login'})
-  else if(route.name === 'Login') {
-    await router.push({name: 'Profile'})
+  if(route.name !== 'Main') await router.push({name: 'Main'})
 
-  }
   isChangeCityLoading.value = false
   isCitiesListModalOpen.value = false
 }
