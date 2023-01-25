@@ -34,7 +34,7 @@ function toggleWishesList () {
 function makeOrder () {
   if(props.roll.available_modifiers?.length) return openModifiersModal()
 
-  cartStore.addRemoveProduct(props.roll.id, 1)
+  cartStore.addRemoveProduct(props.roll.id, 1, selectedWishes.value)
 }
 
 function openModifiersModal () {
@@ -46,12 +46,13 @@ function addRemoveProduct (action: string) {
   if(action === 'plus') props.roll.quantity += 1
   else if (action === 'minus') props.roll.quantity -= 1
 
-  if(!props.roll.modifiers_key) cartStore.addRemoveProduct(props.roll.id, props.roll.quantity)
-  else {
+  if(!props.roll.modifiers_key) {
+    cartStore.addRemoveProduct(props.roll.id, props.roll.quantity, selectedWishes.value)
+  } else {
     const modifiedProduct = {
       city_id: localStorage.getItem('activeCity'),
       id: props.roll.id,
-      kitchen_comments: [],
+      kitchen_comments: selectedWishes.value,
       quantity: props.roll.quantity,
       modifiers: props.roll.modifiers_key.split('_').map(id => {
         return {
@@ -120,7 +121,7 @@ function addRemoveProduct (action: string) {
         <button
             v-if="!roll.quantity || roll.available_modifiers.length"
             class="product-card__btn"
-            @click="makeOrder"
+            @click="makeOrder()"
         >
           Заказать
         </button>

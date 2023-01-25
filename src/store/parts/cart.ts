@@ -19,11 +19,11 @@ export const useCartStore = defineStore('cart', {
             this.cart = data
         },
 
-        async addRemoveProduct (id: number, quantity: number) {
+        async addRemoveProduct (id: number, quantity: number, selectedWishes: any) {
             const newProduct = {
                 id,
                 city_id: localStorage.getItem('activeCity'),
-                kitchen_comments: [],
+                kitchen_comments: selectedWishes,
                 quantity
             }
             const {data} = await api.cart.post(newProduct)
@@ -39,7 +39,7 @@ export const useCartStore = defineStore('cart', {
 
             if(data.success) {
                 this.cart = data.cart
-                return toast.success('Добавлено успешно')
+                return toast.success('Товар добавлен в корзину')
             }
 
             return toast.error(data.error_message)
