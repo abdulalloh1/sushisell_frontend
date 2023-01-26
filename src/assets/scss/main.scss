@@ -329,7 +329,10 @@ body {
     color: #212121;
 
     svg {
+      width: 16px;
+      height: 16px;
       margin-right: 5px;
+      --current-color: #140E38;
 
       path {
         transition: fill .2s;
@@ -363,7 +366,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 100px 0;
 
   &-wrapper {
     width: 100%;
@@ -618,6 +620,7 @@ body {
 
     &--telegram {
       background-color: #0089cd;
+      --current-color: #fff;
     }
   }
 }

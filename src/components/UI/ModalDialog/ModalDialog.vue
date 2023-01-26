@@ -58,59 +58,61 @@ onMounted(() => {
 </script>
 
 <template>
-  <transition name="modal">
-    <div
-        v-if="modelValue"
-        :class="['modal', `modal--size-${size}`]"
-    >
+  <teleport to="body">
+    <transition name="modal">
       <div
-          class="modal__overlay"
-          @click="closeModal()"
-      />
-      <div class="modal__wrapper">
-        <div class="modal__window">
-          <div class="modal__header">
-            <button
-                v-if="backIcon"
-                class="modal__back"
-                @click="closeModal()"
-            >
-              <svg data-src="/img/icons/back.svg"/>
-            </button>
-            <slot name="header"/>
-            <button
-                v-if="closeIcon"
-                class="modal__close"
-                @click="closeModal()"
-            >
-              <svg
-                  data-src="/img/icons/close.svg"
-                  height="24"
-                  width="24"
-              />
-            </button>
-          </div>
+          v-if="modelValue"
+          :class="['modal', `modal--size-${size}`]"
+      >
+        <div
+            class="modal__overlay"
+            @click="closeModal()"
+        />
+        <div class="modal__wrapper">
+          <div class="modal__window">
+            <div class="modal__header">
+              <button
+                  v-if="backIcon"
+                  class="modal__back"
+                  @click="closeModal()"
+              >
+                <svg data-src="/img/icons/back.svg"/>
+              </button>
+              <slot name="header"/>
+              <button
+                  v-if="closeIcon"
+                  class="modal__close"
+                  @click="closeModal()"
+              >
+                <svg
+                    data-src="/img/icons/close.svg"
+                    height="24"
+                    width="24"
+                />
+              </button>
+            </div>
 
-          <div
-              :class="[
+            <div
+                :class="[
               'modal__body',
               {
                 'modal__body--no-padding': !isButtonsSlotExist
               }
             ]"
-          >
-            <slot name="body"/>
-          </div>
-          <div
-              v-if="isButtonsSlotExist"
-              class="modal__buttons"
-          >
-            <slot name="buttons"/>
+            >
+              <slot name="body"/>
+            </div>
+            <div
+                v-if="isButtonsSlotExist"
+                class="modal__buttons"
+            >
+              <slot name="buttons"/>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+  </teleport>
 </template>
 
 <style

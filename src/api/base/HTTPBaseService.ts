@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useCitiesStore } from "@/store/parts/cities";
+import { ExternalAccessToken, InternalAccessToken } from "@/cache/AccessToken";
 
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
     const citiesStore = useCitiesStore()
     const activeCityExternalId = citiesStore.activeCity.external_id;
-    const accessToken = localStorage.getItem('accessToken')
-    const externalAccessToken = localStorage.getItem('externalAccessToken')
+    const accessToken = InternalAccessToken.get()
+    const externalAccessToken = ExternalAccessToken.get()
     config.headers = config.headers ?? {}
 
     if (accessToken && !activeCityExternalId) config.headers.Authorization = accessToken

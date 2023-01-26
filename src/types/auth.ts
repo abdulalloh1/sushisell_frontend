@@ -1,7 +1,11 @@
-export interface Login {
-    password?: string,
+export interface internalLogin {
     phone: string,
-    code?: string
+    code: string
+}
+
+export interface externalLogin {
+    phone: string,
+    password: string
 }
 
 export interface Register {

@@ -5,11 +5,12 @@ import AppInputPhone from "@/components/UI/AppInputPhone/AppInputPhone.vue";
 
 import type { Register } from "@/types/auth";
 import { computed, onMounted, reactive, ref } from "vue";
-import useToast from "@/components/UI/AppToast/useToast";
 import api from "@/api";
+import useToast from "@/components/UI/AppToast/useToast";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/parts/auth";
-import AuthPhoneConfirmationModal from "@/components/AuthPhoneConfirmationModal/AuthPhoneConfirmationModal.vue";
+import AuthPhoneConfirmationModal from "@/components/WorkSpace/PhoneConfirmationModal/PhoneConfirmationModal.vue";
+import { InternalAccessToken } from "@/cache/AccessToken";
 
 const { toast } = useToast()
 const router = useRouter()
@@ -72,7 +73,7 @@ async function registerCheck (code: string) {
 
   if(data.success) {
     authStore.isLoggedIn = true
-    localStorage.setItem('accessToken', data.token)
+    InternalAccessToken.set(data.token)
     await router.push({name: 'Profile'})
   }
   else {
@@ -119,25 +120,7 @@ onMounted(() => {
             }]"
             @click="selectRegisterType('telegram')"
         >
-          <svg
-              data-v-6fdda0ab=""
-              data-v-4561fb79=""
-              width="16"
-              height="14"
-              viewBox="0 0 16 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="external-confirm__button-svg"
-          >
-            <path
-                data-v-6fdda0ab=""
-                data-v-4561fb79=""
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M1.09992 6.17238C5.39488 4.31288 8.25885 3.08698 9.69185 2.49469C13.7834 0.803569 14.6335 0.509804 15.1877 0.500103C15.3095 0.49797 15.5821 0.527985 15.7586 0.670319C15.9076 0.790503 15.9486 0.952855 15.9683 1.0668C15.9879 1.18075 16.0123 1.44033 15.9929 1.64315C15.7712 3.95816 14.8118 9.57609 14.3237 12.1689C14.1172 13.2661 13.7105 13.6339 13.3169 13.6699C12.4613 13.7482 11.8116 13.1081 10.9829 12.5683C9.68624 11.7236 8.9537 11.1978 7.69503 10.3736C6.24043 9.42102 7.18338 8.89748 8.01236 8.04188C8.22931 7.81796 11.999 4.41067 12.0719 4.10158C12.0811 4.06292 12.0895 3.91882 12.0034 3.84274C11.9172 3.76665 11.7901 3.79267 11.6983 3.81336C11.5683 3.84269 9.4968 5.20328 5.48389 7.89511C4.89591 8.29633 4.36333 8.49182 3.88616 8.48157C3.36012 8.47028 2.34822 8.18601 1.59598 7.94302C0.673328 7.64498 -0.0599784 7.48741 0.00387615 6.98125C0.0371355 6.71761 0.402482 6.44799 1.09992 6.17238Z"
-                fill="#140E38"
-            />
-          </svg>
+          <svg data-src="/img/icons/telegram.svg"/>
           Telegram
         </button>
         <button
@@ -179,7 +162,7 @@ onMounted(() => {
           :disabled="computedIsButtonDisabled"
           @click.prevent="submit"
       >
-        ПОДТВЕРДИТЬ
+        Подтвердить
       </button>
     </form>
     <div class="auth__links">

@@ -2,8 +2,8 @@
     lang="ts"
     setup
 >
-import type { Login } from "@/types/auth";
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import type { externalLogin, internalLogin } from "@/types/auth";
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useAuthStore } from "@/store/parts/auth";
 
 import AppInput from '@/components/UI/AppInput/AppInput.vue';
@@ -14,79 +14,91 @@ import { useCitiesStore } from "@/store/parts/cities";
 import api from "@/api";
 import useToast from "@/components/UI/AppToast/useToast";
 import { useMenuStore } from "@/store/parts/menu";
-import AuthPhoneConfirmationModal from "@/components/AuthPhoneConfirmationModal/AuthPhoneConfirmationModal.vue";
+import AuthPhoneConfirmationModal from "@/components/WorkSpace/PhoneConfirmationModal/PhoneConfirmationModal.vue";
+import DeviceUuidCache from "@/cache/DeviceUuidCache";
 
 const router = useRouter()
 const { toast } = useToast()
 const authStore = useAuthStore()
 const citiesStore = useCitiesStore()
 const menuStore = useMenuStore()
-const loginCredentials: Login = reactive({
+const loginCredentials = reactive({
   phone: '',
-  password: ''
+  password: '',
+  code: ''
 })
 const captchaImage = ref('')
 const captchaValue = ref('')
-const hasExternalID = ref(!!citiesStore.activeCity.external_id)
 const isCaptchaLoading = ref(false)
 const isRequestPending = ref(false)
 const isConfirmModalOpen = ref(false)
 
+if (authStore.isLoggedIn) router.push({ name: 'Profile' })
+
 const computedSubmitBtnDisabled = computed(() => {
-  return !loginCredentials.phone.trim() || hasExternalID.value ? !loginCredentials.password.trim() : isCaptchaLoading.value
+  return !loginCredentials.phone.trim() || citiesStore.hasActiveCityExternalId ? !loginCredentials.password.trim() : isCaptchaLoading.value
 })
 
-async function login () {
+async function login() {
   isRequestPending.value = true
-  if(!hasExternalID.value) {
-    delete loginCredentials.password
-    loginCredentials.code = captchaValue.value
-    loginCredentials.phone = '7' + loginCredentials.phone
-    const {data} = await api.auth.authExternal(loginCredentials)
-    if(data?.data?.errors) {
-      Object.keys(data.data.errors).forEach(key => {
-        let errorMessage;
-        if(key === 'code') {
-          errorMessage = data.data.errors.code[0];
-        } else {
-          errorMessage = key;
-        }
-        toast.error(errorMessage);
-        getCaptcha()
-      })
-    }
-    else {
-      isConfirmModalOpen.value = true
-    }
+  if (!citiesStore.hasActiveCityExternalId) {
+    await internalLogin()
   } else {
-    await authStore.login(loginCredentials)
-        .then(() => {
-          router.push({name: 'Profile'})
-          menuStore.getFavoriteProducts()
-        })
+    await externalLogin()
   }
 
   isRequestPending.value = false
 }
 
-async function confirmPhoneNumber (code: string) {
-  loginCredentials.code = code
-  loginCredentials.guid = localStorage.getItem('deviceUUID')
-  loginCredentials.os_type = "Web"
-  const {data} = await api.auth.authExternalConfirm(loginCredentials)
-
-  if(data?.data?.errors) {
-    Object.keys(data.data.errors).forEach(key => {
-      let errorMessage;
-      if(key === 'code') {
-        errorMessage = data.data.errors.code[0];
-      } else {
-        errorMessage = key;
-      }
-      toast.error(errorMessage);
-      isConfirmModalOpen.value = false
-    })
+async function internalLogin() {
+  const internalLoginCredentials: internalLogin = {
+    code: captchaValue.value,
+    phone: '7' + loginCredentials.phone
   }
+  const { data } = await api.auth.authExternal(internalLoginCredentials)
+
+  if (checkErrorFromData(data)) {
+    await getCaptcha()
+  } else {
+    isConfirmModalOpen.value = true
+  }
+}
+
+async function externalLogin() {
+  return await authStore.login(loginCredentials)
+      .then(() => {
+        router.push({ name: 'Profile' })
+        menuStore.getFavoriteProducts()
+      })
+}
+
+function checkErrorFromData(data: object) {
+  if (!data?.data?.errors) return false;
+
+  Object.keys(data.data.errors).forEach(key => {
+    let errorMessage;
+    if (key === 'code') {
+      errorMessage = data.data.errors.code[0];
+    } else {
+      errorMessage = key;
+    }
+    toast.error(errorMessage);
+  })
+
+  return true
+}
+
+async function confirmPhoneNumber(code: string) {
+  const confirmDTO = {
+    phone: loginCredentials.phone,
+    code,
+    guid: DeviceUuidCache.get(),
+    os_type: "Web"
+  }
+  const { data } = await api.auth.authExternalConfirm(confirmDTO)
+
+  checkErrorFromData(data)
+  isConfirmModalOpen.value = false
 }
 
 async function getCaptcha () {
@@ -105,8 +117,7 @@ function resendCaptcha () {
 }
 
 onMounted(() => {
-  if(authStore.isLoggedIn) router.push({name: 'Profile'})
-  if(!hasExternalID.value) getCaptcha()
+  if (!citiesStore.hasActiveCityExternalId) getCaptcha()
 })
 
 
@@ -120,17 +131,18 @@ onMounted(() => {
         @submit.prevent="login"
     >
       <h3 class="auth__title">
-        {{ citiesStore.activeCity.external_id ? 'Вход' : 'Вход / регистрация' }}
+        {{ citiesStore.hasActiveCityExternalId ? 'Вход' : 'Вход / регистрация' }}
       </h3>
       <div
-          v-if="!citiesStore.activeCity.external_id"
+          v-if="!citiesStore.hasActiveCityExternalId"
           class="auth__captcha"
       >
         <button
             :class="['auth__captcha__refresh-btn', {
                 'auth__captcha__refresh-btn--loading': isCaptchaLoading
             }]"
-            @click.prevent=""
+            :disabled="isCaptchaLoading"
+            @click.prevent="getCaptcha"
         >
           <svg data-src="/img/icons/refresh.svg"/>
         </button>
@@ -148,14 +160,14 @@ onMounted(() => {
           v-model="loginCredentials.phone"
       />
       <app-input
-          v-if="citiesStore.activeCity.external_id"
+          v-if="citiesStore.hasActiveCityExternalId"
           v-model="loginCredentials.password"
           type="password"
           placeholder="Пароль"
           :width="270"
       />
       <div
-          v-if="!citiesStore.activeCity.external_id"
+          v-if="!citiesStore.hasActiveCityExternalId"
           class="auth__description"
       >
         После нажатия на кнопку вам поступит звонок.
@@ -167,11 +179,11 @@ onMounted(() => {
           class="auth__btn"
           :disabled="computedSubmitBtnDisabled"
       >
-        {{ citiesStore.activeCity.external_id ? 'Войти' : 'Позвонить мне' }}
+        {{ citiesStore.hasActiveCityExternalId ? 'Войти' : 'Позвонить мне' }}
       </button>
     </form>
     <div
-        v-if="citiesStore.activeCity.external_id"
+        v-if="citiesStore.hasActiveCityExternalId"
         class="auth__links"
     >
       <router-link

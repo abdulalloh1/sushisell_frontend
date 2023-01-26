@@ -13,6 +13,7 @@ import AppRadio from "@/components/UI/AppRadio/AppRadio.vue";
 import ProgressLinear from "@/components/UI/ProgressLinear/ProgressLinear.vue";
 import { useAuthStore } from "@/store/parts/auth";
 import { useRoute, useRouter } from "vue-router";
+import ActiveCityCache from "@/cache/ActiveCityCache";
 
 const router = useRouter()
 const route = useRoute()
@@ -48,7 +49,7 @@ async function changeCity(id: number) {
 }
 
 onMounted(() => {
-  if (!localStorage.getItem('activeCity')) openCitiesListModal()
+  if (!ActiveCityCache.get()) openCitiesListModal()
 })
 </script>
 
@@ -83,12 +84,11 @@ onMounted(() => {
       </a>
     </div>
 
-    <teleport to="body">
+    <div class="cities-list-modal-dialog">
       <modal-dialog
           v-model="isCitiesListModalOpen"
           :close-icon="false"
           :back-icon="!!citiesStore.activeCity.id"
-          class="cities-list-modal-dialog"
           size="full"
       >
         <template #header>
@@ -116,22 +116,20 @@ onMounted(() => {
           </div>
         </template>
       </modal-dialog>
-
-      <modal-dialog
-          v-model="isMessageModalOpen"
-          class="message-modal-dialog"
-      >
-        <template #body>
-          <app-chip
-              class="message-modal-dialog__chip message-modal-dialog__chip--telegram"
-              :href="settingStore.setting?.tg_link"
-          >
-            <svg data-src="/img/icons/telegram.svg"/>
-            Написать в Telegram
-          </app-chip>
-        </template>
-      </modal-dialog>
-    </teleport>
+    </div>
+      <div class="message-modal-dialog">
+        <modal-dialog v-model="isMessageModalOpen">
+          <template #body>
+            <app-chip
+                class="message-modal-dialog__chip message-modal-dialog__chip--telegram"
+                :href="settingStore.setting?.tg_link"
+            >
+              <svg data-src="/img/icons/telegram.svg"/>
+              Написать в Telegram
+            </app-chip>
+          </template>
+        </modal-dialog>
+      </div>
   </div>
 </template>
 

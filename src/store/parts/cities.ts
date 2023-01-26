@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import api from '@/api'
 import { useMenuStore } from "@/store/parts/menu";
+import ActiveCityCache from "@/cache/ActiveCityCache";
 
 export interface City {
     name: string,
-    id: number
+    id: number,
+    external_id: number | null
 }
 
 export const useCitiesStore = defineStore('cities', {
@@ -13,6 +15,11 @@ export const useCitiesStore = defineStore('cities', {
         cities: <City[]> [],
         activeCity: <City> {}
     }),
+    getters: {
+        hasActiveCityExternalId (): boolean {
+            return !!this.activeCity.external_id
+        }
+    },
     actions: {
         async getCities() {
             this.isCitiesFetching = true
@@ -20,7 +27,7 @@ export const useCitiesStore = defineStore('cities', {
             this.isCitiesFetching = false
             this.cities = data.data
 
-            const activeCity = localStorage.getItem('activeCity')
+            const activeCity = ActiveCityCache.get()
 
             if(activeCity) {
                 await this.changeActiveCity(activeCity)
@@ -31,7 +38,12 @@ export const useCitiesStore = defineStore('cities', {
             const selectedCity: City = this.cities.find(city => city.external_id ? +city.external_id === +id : +city.id === +id)
             this.activeCity = { ...selectedCity }
 
-            localStorage.setItem('activeCity', this.activeCity.external_id ? this.activeCity.external_id : this.activeCity.id)
+            if(this.hasActiveCityExternalId) {
+                ActiveCityCache.set(this.activeCity.external_id)
+            }
+            else {
+                ActiveCityCache.set(this.activeCity.id)
+            }
 
             const catalogStore = useMenuStore()
             await catalogStore.getMenu()

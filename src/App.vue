@@ -12,11 +12,10 @@ import {uuid} from "vue3-uuid";
 // Components
 import AppHeader from "@/components/Layout/AppHeader/AppHeader.vue";
 import AppToast from "@/components/UI/AppToast/AppToast.vue";
-import Appfooter from "@/components/Layout/AppFooter/Appfooter.vue";
+import AppFooter from "@/components/Layout/AppFooter/Appfooter.vue";
 import { useCartStore } from "@/store/parts/cart";
 import { useAuthStore } from "@/store/parts/auth";
-import ModifiersModal from "@/components/ModifiersModal/ModifiersModal.vue";
-import { useModifiersModal } from "@/composables/modifiersModal";
+import DeviceUuidCache from "@/cache/DeviceUuidCache";
 
 // State
 const isPreloaderActive = ref(true)
@@ -27,10 +26,10 @@ const settingStore = useSettingStore()
 const menuStore = useMenuStore()
 const cartStore = useCartStore()
 const authStore = useAuthStore()
-const { isModifiersModalOpen, roll } = useModifiersModal()
 
 onMounted(() => {
-  if(!localStorage.getItem('deviceUUID')) localStorage.setItem('deviceUUID', uuid.v4())
+  if(!DeviceUuidCache.get()) DeviceUuidCache.set(uuid.v4())
+
   Promise.all([
     citiesStore.getCities(),
     settingStore.getSetting(),
@@ -41,7 +40,7 @@ onMounted(() => {
         isPreloaderActive.value = false
         authStore.checkTokenFromLocalstorage()
 
-        authStore.isLoggedIn ? menuStore.getFavoriteProducts() : ''
+        if(authStore.isLoggedIn) menuStore.getFavoriteProducts()
       })
 })
 </script>
@@ -50,13 +49,9 @@ onMounted(() => {
     <template v-if="!isPreloaderActive">
       <app-header />
       <router-view />
-      <appfooter />
+      <app-footer />
 
       <app-toast />
-      <modifiers-modal
-          v-model="isModifiersModalOpen"
-          :roll="roll"
-      />
     </template>
 
 </template>

@@ -1,7 +1,7 @@
 import { axiosInstanceV1, axiosInstanceV2 } from "@/api/base/HTTPBaseService";
 import type { AxiosInstance } from "axios";
 
-export class Core {
+export class CoreApi {
     protected _axios: AxiosInstance;
     protected _axios2: AxiosInstance;
     protected url: string;

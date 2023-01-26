@@ -2,14 +2,14 @@
     lang="ts"
     setup
 >
-import { ref } from 'vue';
-import AppCheckBox from '../UI/AppCheckBox/AppCheckBox.vue';
+import { computed, ref } from 'vue';
+import AppCheckBox from '@/components/UI/AppCheckBox/AppCheckBox.vue';
 import SlideInOutAnimation from "@/components/UI/SlideInOutAnimation/SlideInOutAnimation.vue";
+import AppImage from "@/components/UI/AppImage.vue";
 import { useCartStore } from "@/store/parts/cart";
 import { useAuthStore } from "@/store/parts/auth";
 import { useMenuStore } from "@/store/parts/menu";
-import AppImage from "@/components/UI/AppImage.vue";
-import { useModifiersModal } from "@/composables/modifiersModal";
+import ActiveCityCache from "@/cache/ActiveCityCache";
 
 const props = defineProps({
   roll: {
@@ -17,12 +17,12 @@ const props = defineProps({
     required: true
   }
 });
+const emit = defineEmits(['openModifiersModal'])
 
 const isActive = ref(false)
 const isWishesListOpen = ref(false)
 const selectedWishes = ref([])
 
-const modifiersModalComposable = useModifiersModal()
 const cartStore = useCartStore()
 const authStore = useAuthStore()
 const menuStore = useMenuStore()
@@ -34,24 +34,24 @@ function toggleWishesList () {
 function makeOrder () {
   if(props.roll.available_modifiers?.length) return openModifiersModal()
 
-  cartStore.addRemoveProduct(props.roll.id, 1)
+  cartStore.addRemoveProduct(props.roll.id, 1, selectedWishes.value)
 }
 
 function openModifiersModal () {
-  modifiersModalComposable.roll.value = props.roll
-  modifiersModalComposable.isModifiersModalOpen.value = true
+  emit('openModifiersModal', props.roll)
 }
 
 function addRemoveProduct (action: string) {
   if(action === 'plus') props.roll.quantity += 1
   else if (action === 'minus') props.roll.quantity -= 1
 
-  if(!props.roll.modifiers_key) cartStore.addRemoveProduct(props.roll.id, props.roll.quantity)
-  else {
+  if(!props.roll.modifiers_key) {
+    cartStore.addRemoveProduct(props.roll.id, props.roll.quantity)
+  } else {
     const modifiedProduct = {
-      city_id: localStorage.getItem('activeCity'),
+      city_id: ActiveCityCache.get(),
       id: props.roll.id,
-      kitchen_comments: [],
+      kitchen_comments: selectedWishes.value,
       quantity: props.roll.quantity,
       modifiers: props.roll.modifiers_key.split('_').map(id => {
         return {
@@ -92,6 +92,17 @@ function addRemoveProduct (action: string) {
       </button>
       <div class="product-card__text">
         <p class="product-card__name">{{ roll.name }}</p>
+        <div
+            v-if="roll.kitchen_comment"
+            class="product-card__kitchen-comments"
+        >
+          <p
+              v-for="(comment, index) in roll.kitchen_comment"
+              :key="index"
+          >
+            {{ comment.title }}
+          </p>
+        </div>
         <div
             v-if="roll.possible_kitchen_comments?.length"
             class="product-card__wishes"
