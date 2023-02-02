@@ -22,7 +22,7 @@ export const useCartStore = defineStore('cart', {
             this.cart = data
         },
 
-        async addRemoveProduct (id: number, quantity: number, wishes: number[]) {
+        async changeProductAmount (id: number, quantity: number, wishes: number[]) {
             const newProduct = {
                 id,
                 city_id: ActiveCityCache.get(),

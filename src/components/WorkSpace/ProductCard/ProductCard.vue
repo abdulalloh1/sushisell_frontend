@@ -35,19 +35,19 @@ function toggleWishesList () {
 function makeOrder () {
   if(props.roll.available_modifiers?.length) return openModifiersModal()
 
-  cartStore.addRemoveProduct(props.roll.id, 1, selectedWishes.value)
+  cartStore.changeProductAmount(props.roll.id, 1, selectedWishes.value)
 }
 
 function openModifiersModal () {
   emit('openModifiersModal', props.roll)
 }
 
-function addRemoveProduct (action: string) {
+function changeProductAmount (action: string) {
   if(action === 'plus') props.roll.quantity += 1
   else if (action === 'minus') props.roll.quantity -= 1
 
   if(!props.roll.modifiers_key) {
-    cartStore.addRemoveProduct(props.roll.id, props.roll.quantity)
+    cartStore.changeProductAmount(props.roll.id, props.roll.quantity, [])
   } else {
     const modifiedProduct = {
       city_id: ActiveCityCache.get(),
@@ -142,14 +142,14 @@ function addRemoveProduct (action: string) {
         >
           <button
               class="product-card__quantityController__btn product-card__quantityController__btn--minus"
-              @click="addRemoveProduct('minus')"
+              @click="changeProductAmount('minus')"
           >
             -
           </button>
           {{ roll.quantity }}
           <button
               class="product-card__quantityController__btn product-card__quantityController__btn--plus"
-              @click="addRemoveProduct('plus')"
+              @click="changeProductAmount('plus')"
           >
             +
           </button>
