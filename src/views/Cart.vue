@@ -3,7 +3,7 @@
   import { useRouter } from "vue-router";
   import { useAuthStore } from "@/store/parts/auth";
   import { useCartStore } from "@/store/parts/cart";
-  import ProductCard from "@/components/ProductCard/ProductCard.vue";
+  import ProductCard from "@/components/WorkSpace/ProductCard/ProductCard.vue";
 
   const router = useRouter()
   const authStore = useAuthStore()

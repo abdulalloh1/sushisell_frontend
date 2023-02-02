@@ -3,17 +3,18 @@
     setup
 >
 import type { Ref } from "vue";
-import { onMounted, onUnmounted, reactive, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useMenuStore } from "@/store/parts/menu";
 import AppInput from '@/components/UI/AppInput/AppInput.vue'
 import Flickity from '@/components/UI/Flickity/Flickity.vue';
-import ProductCard from '@/components/ProductCard/ProductCard.vue';
+import ProductCard from '@/components/WorkSpace/ProductCard/ProductCard.vue';
 import AppChip from "@/components/UI/Chips/AppChip.vue";
+import ModifiersModal from "@/components/WorkSpace/ModifiersModal/ModifiersModal.vue";
 
 // Store
 const menuStore = useMenuStore()
 
-const categoryChipsRef = ref(null)
+const categoryChipsRef: Ref<HTMLDivElement | null> = ref(null)
 const isFilterOpen = ref(false)
 const flickityOptions = {
   pageDots: false,
@@ -23,6 +24,8 @@ const flickityOptions = {
 }
 const activeCategory: Ref<number> = ref(0)
 const isScrolling = ref(false)
+const isModifiersModalOpen = ref(false)
+const rollWithModifiers: Ref<object> = ref({})
 
 // Functions
 function toggleFilterVisibility () {
@@ -32,24 +35,24 @@ function toggleFilterVisibility () {
 function selectCategory (id: number) {
   isScrolling.value = true
   const element = document.getElementById(`categoryID=${id}`)
-  window.scrollTo({top: element.offsetTop - 110})
+  window.scrollTo({top: element!.offsetTop - 110})
 }
 
 function activateChip () {
-  const elementOffsetTop = categoryChipsRef.value.offsetTop
+  const elementOffsetTop = categoryChipsRef.value!.offsetTop
   const scrollTop = window.scrollY
 
   if(elementOffsetTop <= scrollTop) {
-    categoryChipsRef.value.children[0].classList.add('chips--fixed')
-    document.querySelector('.app-header').classList.add('app-header--no-shadow')
+    categoryChipsRef.value!.children[0].classList.add('chips--fixed')
+    document.querySelector('.app-header')!.classList.add('app-header--no-shadow')
   }
   else {
-    categoryChipsRef.value.children[0].classList.remove('chips--fixed')
-    document.querySelector('.app-header').classList.remove('app-header--no-shadow')
+    categoryChipsRef.value!.children[0].classList.remove('chips--fixed')
+    document.querySelector('.app-header')!.classList.remove('app-header--no-shadow')
   }
 
-  const categoryProducts = document.querySelectorAll('.main__rolls')
-  categoryProducts.forEach(category => {
+  const categoryProducts: NodeListOf<HTMLDivElement> = document.querySelectorAll('.main__rolls')
+  categoryProducts.forEach((category: HTMLElement) => {
     let scrollTop = window.scrollY;
     let offset = category.offsetTop;
 
@@ -61,6 +64,11 @@ function activateChip () {
 
 function isCategoryKit (str: string) {
   return str.replace(/[^a-zA-Z]+/g, '') === 'nabori'
+}
+
+function openModifiersModal (roll: object) {
+  rollWithModifiers.value = roll
+  isModifiersModalOpen.value = true
 }
 
 onMounted(() => {
@@ -155,10 +163,15 @@ onUnmounted(() => {
               :key="productIndex"
               :roll="product"
               :class="{'product-card--active': isCategoryKit(category.url ?? category.slug)}"
+              @openModifiersModal="openModifiersModal"
           />
         </template>
         <h4 class="main__rolls__description">{{ category.description }}</h4>
       </div>
     </div>
+    <modifiers-modal
+        v-model="isModifiersModalOpen"
+        :roll="rollWithModifiers"
+    />
   </div>
 </template>

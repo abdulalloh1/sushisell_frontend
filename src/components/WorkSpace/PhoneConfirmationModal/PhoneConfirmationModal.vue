@@ -1,10 +1,9 @@
 <template>
-  <teleport to="body">
+  <div class="confirm-phone-modal-dialog">
     <modal-dialog
         v-model="computedModelValue"
         back-icon
         size="full"
-        class="confirm-phone-modal-dialog"
         :close-icon="false"
     >
       <template #header>
@@ -43,7 +42,7 @@
         <slot />
       </template>
     </modal-dialog>
-  </teleport>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -51,6 +50,7 @@ import { vMaska } from 'maska';
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
 import ProgressLinear from "@/components/UI/ProgressLinear/ProgressLinear.vue";
 import { computed, ref, watch } from "vue";
+import type { Ref } from "vue";
 
 const props = defineProps({
   modelValue: Boolean,
@@ -63,7 +63,7 @@ const props = defineProps({
 const emit = defineEmits(['submit', 'update:modelValue'])
 
 const confirmationCode = ref('')
-const inputRef = ref(null)
+const inputRef: Ref<HTMLInputElement | null> = ref(null)
 
 const computedModelValue = computed({
   get() {
@@ -75,10 +75,12 @@ const computedModelValue = computed({
 })
 
 function enterCode () {
-  inputRef.value.focus()
+  inputRef.value?.focus()
 }
 
-watch(confirmationCode, (newVal) => newVal.length === 4 ? emit('submit', newVal) : '')
+watch(confirmationCode, (newVal) => {
+  if(newVal.length === 4) emit('submit', newVal)
+})
 </script>
 
-<style lang="scss" src="./AuthPhoneConfirmationModal.scss" />
+<style lang="scss" src="./PhoneConfirmationModal.scss" />

@@ -1,8 +1,9 @@
-import { Core } from "@/api/base/Core";
+import { CoreApi } from "@/api/base/CoreApi";
 import type { Login, Register } from "@/types/auth";
 import { axiosInstanceV1, axiosInstanceV2 } from "@/api/base/HTTPBaseService";
+import DeviceUuidCache from "@/cache/DeviceUuidCache";
 
-class Auth extends Core {
+class AuthApi extends CoreApi {
     constructor(url: string) {
         super(url);
     }
@@ -10,7 +11,7 @@ class Auth extends Core {
     loginApi (payload: Login) {
         return this._axios2.post(this.url + '/login', payload, {
             headers: {
-                UUID: localStorage.getItem('deviceUUID')
+                UUID: DeviceUuidCache.get()
             }
         })
     }
@@ -34,7 +35,7 @@ class Auth extends Core {
     registerApi (payload: Register) {
         return this._axios2.post(this.url + '/register', payload, {
             headers: {
-                UUID: localStorage.getItem('deviceUUID')
+                UUID: DeviceUuidCache.get()
             }
         })
     }
@@ -42,7 +43,7 @@ class Auth extends Core {
     registerCheckApi (payload: {phone: string, code: string}) {
         return this._axios2.post(this.url + '/registerCheck', payload, {
             headers: {
-                UUID: localStorage.getItem('deviceUUID')
+                UUID: DeviceUuidCache.get()
             }
         })
     }
@@ -56,4 +57,4 @@ class Auth extends Core {
     }
 }
 
-export default Auth;
+export default AuthApi;

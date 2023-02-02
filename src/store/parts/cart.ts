@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import api from "@/api";
 import useToast from "@/components/UI/AppToast/useToast";
+import DeviceUuidCache from "@/cache/DeviceUuidCache";
+import { InternalAccessToken } from "@/cache/AccessToken";
+import ActiveCityCache from "@/cache/ActiveCityCache";
 
 export const useCartStore = defineStore('cart', {
     state: () => ({
@@ -12,18 +15,18 @@ export const useCartStore = defineStore('cart', {
         async getCart () {
             const {data} = await api.cart.getAll({
                 headers: {
-                    UUID: localStorage.getItem('deviceUUID'),
-                    Authorization: localStorage.getItem('accessToken')
+                    UUID: DeviceUuidCache.get(),
+                    Authorization: InternalAccessToken.get()
                 }
             })
             this.cart = data
         },
 
-        async addRemoveProduct (id: number, quantity: number, selectedWishes: any) {
+        async addRemoveProduct (id: number, quantity: number, wishes: number[]) {
             const newProduct = {
                 id,
-                city_id: localStorage.getItem('activeCity'),
-                kitchen_comments: selectedWishes,
+                city_id: ActiveCityCache.get(),
+                kitchen_comments: wishes,
                 quantity
             }
             const {data} = await api.cart.post(newProduct)

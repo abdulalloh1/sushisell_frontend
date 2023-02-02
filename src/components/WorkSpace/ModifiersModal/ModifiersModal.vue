@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import ModalDialog from "@/components/UI/ModalDialog/ModalDialog.vue";
-import { computed, reactive, ref } from "vue";
-import { useCitiesStore } from "@/store/parts/cities";
+import { computed } from "vue";
+import type { ComputedRef } from "vue";
 import { useCartStore } from "@/store/parts/cart";
+import ActiveCityCache from "@/cache/ActiveCityCache";
 
 const props = defineProps({
   modelValue: Boolean,
@@ -15,6 +16,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'submit'])
 
 const cartStore = useCartStore()
+
 const modifierGroups = computed(() => {
   return props.roll.modifier_groups
 })
@@ -28,7 +30,7 @@ const computedModelValue = computed({
   }
 })
 
-const computedModifierGroupsIDs = computed(() => {
+const computedModifierGroupsIDs: ComputedRef = computed(() => {
   if (!modifierGroups.value) return
 
   const groupIDs: number[] = []
@@ -42,7 +44,7 @@ const computedModifierGroupsIDs = computed(() => {
 })
 
 const computedModifiers = computed(() => {
-  if (!computedModifierGroupsIDs.value?.length) return [];
+  if (!computedModifierGroupsIDs.value.length) return [];
 
   return modifierGroups.value
       .sort(item => item.sort_order)
@@ -64,7 +66,7 @@ const computedSubmitBtnDisabled = computed(() => {
 })
 
 const computedSelectedProductsLength = computed(() => {
-  return computedModifiers.value.reduce((acc, group) => {
+  return computedModifiers.value.reduce((acc: number, group) => {
     return acc += group.selectedProducts.length ? 1 : 0
   }, 0)
 })
@@ -99,85 +101,86 @@ async function submit () {
   })
   const modifiersIds = modifiers.map(item => item.id)
   const modifiedSelectedProducts = {
-    city_id: localStorage.getItem('activeCity'),
+    city_id: ActiveCityCache.get(),
     id: props.roll.id,
     kitchen_comments: [],
     quantity: 1,
     modifiers,
     queueKey: `${props.roll.id}_${modifiersIds.join('_')}`
   }
+  computedModelValue.value = false
   await cartStore.addKitProducts(modifiedSelectedProducts)
-      .finally(() => computedModelValue.value = false)
 }
 </script>
 
 <template>
-  <modal-dialog
-      v-model="computedModelValue"
-      size="full"
-      class="product-modifiers-modal-dialog"
-      :close-icon="false"
-      :back-icon="true"
-  >
-    <template #header>
-      <h2 class="modal__title">Собери сам</h2>
-      <a
-          href="tel:+78006002665"
-          class="modal__header__phone"
-      >
-        <svg data-src="/img/icons/phone.svg"/>
-      </a>
-    </template>
-    <template #body>
-      <div class="product-modifiers-modal-dialog__selected">
-        <h4 class="product-modifiers-modal-dialog__selected__title">Выбрано</h4>
-        <div class="product-modifiers-modal-dialog__selected__amount">{{ computedSelectedProductsLength }}/{{ computedModifierGroupsIDs?.length }}</div>
-      </div>
-      <div
-          v-for="(group, groupIndex) in computedModifiers"
-          class="product-modifiers-modal-dialog__items"
-          :key="groupIndex"
-      >
-        <div class="product-modifiers-modal-dialog__items__title">
-          {{ group.title }}
+  <div class="product-modifiers-modal-dialog">
+    <modal-dialog
+        v-model="computedModelValue"
+        size="full"
+        :close-icon="false"
+        :back-icon="true"
+    >
+      <template #header>
+        <h2 class="modal__title">Собери сам</h2>
+        <a
+            href="tel:+78006002665"
+            class="modal__header__phone"
+        >
+          <svg data-src="/img/icons/phone.svg"/>
+        </a>
+      </template>
+      <template #body>
+        <div class="product-modifiers-modal-dialog__selected">
+          <h4 class="product-modifiers-modal-dialog__selected__title">Выбрано</h4>
+          <div class="product-modifiers-modal-dialog__selected__amount">{{ computedSelectedProductsLength }}/{{ computedModifierGroupsIDs?.length }}</div>
         </div>
         <div
-            v-for="(product, productIndex) in group.products"
-            class="product-card"
-            :key="productIndex"
+            v-for="(group, groupIndex) in computedModifiers"
+            class="product-modifiers-modal-dialog__items"
+            :key="groupIndex"
         >
-          <div class="product-card__img">
-            <img
-                :src="product.photo"
-                alt=""
-            >
+          <div class="product-modifiers-modal-dialog__items__title">
+            {{ group.title }}
           </div>
-          <div class="product-card__items">
-            <p class="product-card__name">{{ product.name }}</p>
-            <div class="product-card__text">
-              {{ product.info.weight }}
-              <button
-                  :class="['product-card__btn', {
+          <div
+              v-for="(product, productIndex) in group.products"
+              class="product-card product-modifiers-modal-dialog__product-card"
+              :key="productIndex"
+          >
+            <div class="product-card__img">
+              <img
+                  :src="product.photo"
+                  alt=""
+              >
+            </div>
+            <div class="product-card__items">
+              <p class="product-card__name">{{ product.name }}</p>
+              <div class="product-card__text">
+                {{ product.info.weight }}
+                <button
+                    :class="['product-card__btn', {
                         'product-card__btn--green': group.selectedProducts.includes(product.id)
                       }]"
-                  :disabled="checkToggleBtnToDisabled(group, product.id)"
-                  @click="addRemoveModifier(group, product.id)"
-              >
-                {{ group.selectedProducts.includes(product.id) ? 'Удалить' : 'Добавить' }}
-              </button>
+                    :disabled="checkToggleBtnToDisabled(group, product.id)"
+                    @click="addRemoveModifier(group, product.id)"
+                >
+                  {{ group.selectedProducts.includes(product.id) ? 'Удалить' : 'Добавить' }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <button
-          class="product-modifiers-modal-dialog__submit-btn"
-          :disabled="computedSubmitBtnDisabled"
-          @click="submit"
-      >
-        Заказать набор
-      </button>
-    </template>
-  </modal-dialog>
+        <button
+            class="product-modifiers-modal-dialog__submit-btn"
+            :disabled="computedSubmitBtnDisabled"
+            @click="submit"
+        >
+          Заказать набор
+        </button>
+      </template>
+    </modal-dialog>
+  </div>
 </template>
 
 <style lang="scss" src="./ModifiersModal.scss" />

@@ -1,7 +1,8 @@
-import { Core } from "@/api/base/Core";
+import { CoreApi } from "@/api/base/CoreApi";
 import { axiosInstanceV2 } from "@/api/base/HTTPBaseService";
+import DeviceUuidCache from "@/cache/DeviceUuidCache";
 
-class Cart extends Core {
+class CartApi extends CoreApi {
     constructor(url: string) {
         super(url, axiosInstanceV2);
     }
@@ -10,10 +11,10 @@ class Cart extends Core {
         return this._axios.post(this.url + '/product', payload, {
             ...config,
             headers: {
-                UUID: localStorage.getItem('deviceUUID')
+                UUID: DeviceUuidCache.get()
             }
         })
     }
 }
 
-export default Cart
+export default CartApi

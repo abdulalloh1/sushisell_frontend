@@ -15,6 +15,7 @@ import { onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/parts/auth";
 import { useCitiesStore } from "@/store/parts/cities";
+import { ExternalAccessToken, InternalAccessToken } from "@/cache/AccessToken";
 
 const router = useRouter()
 
@@ -22,16 +23,18 @@ const router = useRouter()
 const authStore = useAuthStore()
 const citiesStore = useCitiesStore()
 
+if(!authStore.isLoggedIn) router.push({name: 'Login'})
+
 function logOut () {
-  const hasActiveCityExternalId = citiesStore.activeCity.external_id
-  if(hasActiveCityExternalId) localStorage.removeItem('externalAccessToken')
-  else localStorage.removeItem('accessToken')
+  if(citiesStore.hasActiveCityExternalId) {
+    ExternalAccessToken.clear()
+  }
+  else {
+    InternalAccessToken.clear()
+  }
+
   authStore.isLoggedIn = false
   router.push({name: 'Login'})
 }
-
-onMounted(() => {
-  if(!authStore.isLoggedIn) router.push({name: 'Login'})
-})
 
 </script>
